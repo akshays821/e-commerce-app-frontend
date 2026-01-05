@@ -2,8 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "../../redux/slices/productsSlice";
 
 export default function ProductForm({ onClose }) {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     title: "",
     price: "",
@@ -66,6 +69,7 @@ export default function ProductForm({ onClose }) {
       );
 
       toast.success("Product added successfully");
+      dispatch(fetchProducts());
       onClose();
     } catch (err) {
       toast.error("Failed to add product");

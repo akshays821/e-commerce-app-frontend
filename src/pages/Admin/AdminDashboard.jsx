@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AdminHeader from "../../components/admin/AdminHeader";
-import ProductListTable from "../../components/admin/ProductListTable";
+import ProductList from "../../components/admin/ProductList";
 import ProductForm from "../../components/admin/ProductForm";
 import { Plus } from "lucide-react";
 
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
           </motion.button>
         </div>
 
-        <ProductListTable />
+        <ProductList />
       </main>
 
       <AnimatePresence>

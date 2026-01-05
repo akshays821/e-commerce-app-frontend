@@ -1,9 +1,18 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { LogOut, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminHeader() {
   const navigate = useNavigate();
+
+  // redirect to login if admin token is missing
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/admin/login");
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
@@ -13,6 +22,7 @@ export default function AdminHeader() {
   return (
     <header className="sticky top-0 z-50 bg-secondary/50 backdrop-blur border-b border-border">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        
         <motion.div
           className="flex items-center gap-3"
           initial={{ opacity: 0, x: -20 }}
