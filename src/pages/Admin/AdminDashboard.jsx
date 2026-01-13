@@ -9,7 +9,7 @@ export default function AdminDashboard() {
   const [showAddForm, setShowAddForm] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-white">
       <AdminHeader />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
@@ -18,7 +18,7 @@ export default function AdminDashboard() {
             <span className="text-xs font-bold px-2 py-1 rounded-full bg-primary/20 text-primary">
               Admin Panel
             </span>
-            <h1 className="text-4xl font-bold mt-2">Product Management</h1>
+            <h1 className="text-4xl font-bold mt-2 text-white">Product Management</h1>
             <p className="text-sm text-muted-foreground">
               Manage and organize your product catalog
             </p>

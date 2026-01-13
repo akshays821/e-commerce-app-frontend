@@ -70,7 +70,7 @@ export default function ProductList() {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur border border-border rounded-xl overflow-hidden">
+    <div className="bg-card/50 backdrop-blur border border-border rounded-xl overflow-hidden text-white">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>

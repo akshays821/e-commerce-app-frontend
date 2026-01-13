@@ -36,7 +36,7 @@ export default function AdminHeader() {
           </motion.div>
 
           <div>
-            <h1 className="text-lg font-bold text-foreground">
+            <h1 className="text-lg font-bold text-white">
               Admin Panel
             </h1>
             <p className="text-xs text-muted-foreground">
@@ -49,7 +49,7 @@ export default function AdminHeader() {
           onClick={handleLogout}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-white hover:text-foreground hover:bg-secondary/50 transition"
         >
           <LogOut className="w-4 h-4" />
           Logout

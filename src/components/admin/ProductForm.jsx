@@ -52,11 +52,15 @@ export default function ProductForm({ onClose }) {
         return;
       }
 
-      // Convert form object into FormData, appending only fields that have values
       const data = new FormData();
-      Object.keys(form).forEach((key) => {
-        if (form[key]) data.append(key, form[key]);
-      });
+      data.append("title", form.title);
+      data.append("price", form.price);
+      data.append("category", form.category);
+      data.append("stock", form.stock);
+      data.append("description", form.description);
+      if (form.image) {
+        data.append("image", form.image);
+      }
 
       await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/products`,
@@ -72,7 +76,7 @@ export default function ProductForm({ onClose }) {
       dispatch(fetchProducts());
       onClose();
     } catch (err) {
-      toast.error("Failed to add product");
+      toast.error(err.response?.data?.message || "Failed to add product");
     } finally {
       setLoading(false);
     }
@@ -80,7 +84,7 @@ export default function ProductForm({ onClose }) {
 
   return (
     <motion.div
-      className="h-full flex flex-col"
+      className="h-full flex flex-col text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -92,7 +96,12 @@ export default function ProductForm({ onClose }) {
             Enter product details
           </p>
         </div>
-        <button onClick={onClose}>✕</button>
+        <button
+          onClick={onClose}
+          className="bg-gray-700 text-white rounded-full p-2 hover:bg-gray-600"
+        >
+          ✕
+        </button>
       </div>
 
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
@@ -100,7 +109,7 @@ export default function ProductForm({ onClose }) {
           name="title"
           placeholder="Product title *"
           onChange={handleChange}
-          className="input"
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
         <input
@@ -108,7 +117,7 @@ export default function ProductForm({ onClose }) {
           type="number"
           placeholder="Price *"
           onChange={handleChange}
-          className="input"
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
         <input
@@ -116,21 +125,33 @@ export default function ProductForm({ onClose }) {
           type="number"
           placeholder="Stock *"
           onChange={handleChange}
-          className="input"
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
-        <select name="category" onChange={handleChange} className="input">
-          <option value="">Select category *</option>
-          <option value="electronics">Electronics</option>
-          <option value="clothing">Clothing</option>
-          <option value="accessories">Accessories</option>
+        <select
+          name="category"
+          onChange={handleChange}
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+        >
+          <option value="" className="bg-gray-800">
+            Select category *
+          </option>
+          <option value="electronics" className="bg-gray-800">
+            Electronics
+          </option>
+          <option value="clothing" className="bg-gray-800">
+            Clothing
+          </option>
+          <option value="accessories" className="bg-ray-800">
+            Accessories
+          </option>
         </select>
 
         <textarea
           name="description"
           placeholder="Description"
           onChange={handleChange}
-          className="input"
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
         <input
@@ -152,7 +173,7 @@ export default function ProductForm({ onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-muted py-2 rounded-lg"
+            className="flex-1 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"
           >
             Cancel
           </button>

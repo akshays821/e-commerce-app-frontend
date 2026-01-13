@@ -41,7 +41,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 text-white">
       {/* subtle background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
@@ -59,24 +59,24 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Email</label>
+              <label className="text-sm font-medium text-white">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@shopai.com"
-                className="w-full bg-input/50 border border-border rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary/50 outline-none"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium">Password</label>
+              <label className="text-sm font-medium text-white">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-input/50 border border-border rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary/50 outline-none"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
 
