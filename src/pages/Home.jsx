@@ -94,7 +94,10 @@ export default function Home() {
     let filtered = products;
 
     if (activeCategory) {
-      filtered = filtered.filter(p => p.category === activeCategory);
+      const active = activeCategory.toLowerCase().trim();
+      filtered = filtered.filter(p =>
+        p.category && p.category.toLowerCase().trim() === active
+      );
     }
 
     if (search) {

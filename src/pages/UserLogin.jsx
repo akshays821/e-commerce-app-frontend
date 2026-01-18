@@ -11,6 +11,7 @@ import {
 } from "../redux/slices/userAuthSlice";
 
 import cartImage from "../assets/cart.png";
+import { GoogleLogin } from "@react-oauth/google"; // Import Google Login Component
 
 export default function UserLogin() {
   const dispatch = useDispatch();
@@ -32,6 +33,35 @@ export default function UserLogin() {
       navigate("/");
     }
   }, [isAuthenticated, navigate]);
+
+  // Handle Successful Google Login
+  const handleGoogleSuccess = async (response) => {
+    try {
+      // 1. Send the Google credential (token) to our backend
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/google`,
+        { credential: response.credential }
+      );
+
+      // 2. If backend verification works, log the user in
+      dispatch(
+        loginSuccess({
+          token: res.data.token,
+          user: {
+            _id: res.data._id,
+            name: res.data.name,
+            email: res.data.email,
+          },
+        })
+      );
+
+      toast.success("Welcome back!");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Google Login failed");
+    }
+  };
 
 
   const handleLogin = async (e) => {
@@ -140,6 +170,32 @@ export default function UserLogin() {
                 <span onClick={() => navigate("/signup")} className="text-blue-600 hover:underline cursor-pointer font-medium">
                   Sign up
                 </span>
+              </div>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              {/* Google Login Button */}
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => {
+                    toast.error("Google Login Failed");
+                  }}
+                  useOneTap
+                  theme="filled_blue"
+                  shape="pill"
+                  width="100%"
+                />
               </div>
             </form>
           </div>
