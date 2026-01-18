@@ -1,10 +1,11 @@
-import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight, Tag } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
         { id: "products", label: "Products", icon: ShoppingBag },
+        { id: "categories", label: "Categories", icon: Tag },
         { id: "users", label: "Users", icon: Users },
     ];
 
@@ -27,8 +28,8 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${activeTab === item.id
-                                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                                : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                            : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"
                             }`}
                     >
                         <item.icon size={20} className={activeTab === item.id ? "animate-pulse" : ""} />
@@ -45,8 +46,8 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
                 <button
                     onClick={() => setActiveTab("settings")}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === "settings"
-                            ? "bg-gray-100 text-foreground"
-                            : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"
+                        ? "bg-gray-100 text-foreground"
+                        : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"
                         }`}
                 >
                     <Settings size={20} />

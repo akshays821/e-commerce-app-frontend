@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -16,13 +16,27 @@ export default function ProductForm({ onClose }) {
     image: null,
   });
 
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Fetch categories when form opens
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to load categories");
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setForm({
       ...form,
-      [name]: files ? files[0] : value, // if file input , store file , else normal value
+      [name]: files ? files[0] : value,
     });
   };
 
@@ -66,7 +80,7 @@ export default function ProductForm({ onClose }) {
         `${import.meta.env.VITE_API_BASE_URL}/api/products`,
         data,
         {
-          headers: { // send token from headers to backend 
+          headers: {
             Authorization: `Bearer ${token}`,
           },
         }
@@ -136,15 +150,11 @@ export default function ProductForm({ onClose }) {
           <option value="" className="bg-card">
             Select category *
           </option>
-          <option value="electronics" className="bg-card">
-            Electronics
-          </option>
-          <option value="clothing" className="bg-card">
-            Clothing
-          </option>
-          <option value="accessories" className="bg-card">
-            Accessories
-          </option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat.name.toLowerCase()} className="bg-card capitalize">
+              {cat.name}
+            </option>
+          ))}
         </select>
 
         <textarea
@@ -167,7 +177,7 @@ export default function ProductForm({ onClose }) {
             disabled={loading}
             className="flex-1 bg-primary text-primary-foreground py-2 rounded-lg"
           >
-            {loading ? "Adding..." : "Add Product"}
+            {loading ? "Uploading..." : "Add Product"}
           </button>
 
           <button

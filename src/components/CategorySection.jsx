@@ -5,18 +5,63 @@ import {
   Watch,
   ShoppingBag,
   Footprints,
+  Package,
+  Home,
+  Shirt,
+  Armchair,
+  Gamepad2,
+  Camera,
+  Utensils
 } from "lucide-react";
+import { motion } from "framer-motion";
 
-const categories = [
-  { name: "Shoes", icon: Footprints },
-  { name: "Headphones", icon: Headphones },
-  { name: "Mobiles", icon: Smartphone },
-  { name: "Laptops", icon: Laptop },
-  { name: "Watches", icon: Watch },
-  { name: "Accessories", icon: ShoppingBag },
-];
+// Icon mapping helper
+const getCategoryIcon = (categoryName) => {
+  const name = categoryName.toLowerCase();
 
-export default function CategorySection({ activeCategory, onSelect }) {
+  const iconMap = {
+    'shoes': Footprints,
+    'footwear': Footprints,
+    'sneakers': Footprints,
+    'headphones': Headphones,
+    'audio': Headphones,
+    'mobile': Smartphone,
+    'mobiles': Smartphone,
+    'phones': Smartphone,
+    'electronics': Smartphone,
+    'laptop': Laptop,
+    'laptops': Laptop,
+    'computer': Laptop,
+    'computers': Laptop,
+    'watch': Watch,
+    'watches': Watch,
+    'accessories': ShoppingBag,
+    'bags': ShoppingBag,
+    'clothing': Shirt,
+    'clothes': Shirt,
+    'fashion': Shirt,
+    'furniture': Armchair,
+    'decor': Armchair,
+    'gaming': Gamepad2,
+    'games': Gamepad2,
+    'camera': Camera,
+    'cameras': Camera,
+    'food': Utensils,
+    'grocery': Utensils,
+    'kitchen': Utensils,
+  };
+
+  return iconMap[name] || Package;
+};
+
+export default function CategorySection({ categories, activeCategory, onSelect }) {
+  // If no categories are passed or empty, don't render or render default message
+  // But caller should ensure top 6 are passed.
+
+  const categoriesToRender = categories && categories.length > 0 ? categories : [];
+
+  if (categoriesToRender.length === 0) return null;
+
   return (
     <section className="mb-12">
       <div className="flex items-end justify-between mb-6 px-2">
@@ -25,33 +70,65 @@ export default function CategorySection({ activeCategory, onSelect }) {
             Explore Categories
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Browse our wide range of premium products
+            Browse our most popular categories
           </p>
         </div>
+
+        {/* Optional: Show "All" button or "Clear filter" if activeCategory is selected */}
+        {activeCategory && (
+          <button
+            onClick={() => onSelect(null)}
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            View All
+          </button>
+        )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {categories.map((category) => {
-          const Icon = category.icon;
-          const isActive = activeCategory === category.name;
+      <motion.div
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, staggerChildren: 0.1 }}
+      >
+        {categoriesToRender.map((categoryName, index) => {
+          const Icon = getCategoryIcon(categoryName);
+          const isActive = activeCategory === categoryName;
+
+          // Colorful backgrounds for inactive state
+          const colors = [
+            "bg-blue-100 hover:bg-blue-200",
+            "bg-purple-100 hover:bg-purple-200",
+            "bg-emerald-100 hover:bg-emerald-200",
+            "bg-rose-100 hover:bg-rose-200",
+            "bg-amber-100 hover:bg-amber-200",
+            "bg-cyan-100 hover:bg-cyan-200"
+          ];
+          const colorClass = colors[index % colors.length];
 
           return (
-            <button
-              key={category.name}
-              onClick={() => onSelect(isActive ? null : category.name)}
+            <motion.button
+              key={categoryName}
+              layout
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onSelect(isActive ? null : categoryName)}
               className={`
                 relative group flex flex-col items-center justify-center gap-3 p-6 rounded-2xl transition-all duration-300
-                border border-transparent hover:-translate-y-1
+                border border-transparent
                 ${isActive
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                  : "bg-white/60 hover:bg-white text-foreground hover:shadow-xl hover:shadow-black/5"
+                  : `${colorClass} text-foreground hover:shadow-xl hover:shadow-black/5`
                 }
               `}
             >
               <div
                 className={`p-3 rounded-xl transition-colors ${isActive
-                    ? "bg-white/20"
-                    : "bg-primary/5 group-hover:bg-primary/10"
+                  ? "bg-white/20"
+                  : "bg-white/60 group-hover:bg-white"
                   }`}
               >
                 <Icon
@@ -59,13 +136,13 @@ export default function CategorySection({ activeCategory, onSelect }) {
                     }`}
                 />
               </div>
-              <span className="font-semibold text-sm tracking-wide">
-                {category.name}
+              <span className="font-semibold text-sm tracking-wide capitalize">
+                {categoryName}
               </span>
-            </button>
+            </motion.button>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }

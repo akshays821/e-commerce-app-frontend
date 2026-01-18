@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import heroTech from "../assets/hero-tech.png";
 import heroFashion from "../assets/hero-fashion.png";
 import heroGaming from "../assets/hero-gaming.png";
@@ -33,40 +34,50 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <section className="relative h-[300px] md:h-[450px] w-full overflow-hidden mb-12 rounded-b-[2.5rem] shadow-xl group">
-      {/* Slides */}
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? "opacity-100" : "opacity-0"
-            }`}
+      <AnimatePresence>
+        <motion.div
+          key={current}
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="absolute inset-0"
         >
           {/* Background Image with Gradient Overlay */}
           <div className="absolute inset-0 bg-black/40 z-10" />
           <img
-            src={slide.image}
-            alt={slide.title}
+            src={slides[current].image}
+            alt={slides[current].title}
             className="w-full h-full object-cover"
           />
 
           {/* Content */}
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 mt-8">
-            <h1 className={`text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter transition-all duration-700 transform ${index === current ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-              }`}>
-              {slide.title}
-            </h1>
-            <p className={`text-xl md:text-2xl text-white/90 font-light max-w-2xl transition-all duration-700 delay-100 transform ${index === current ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-              }`}>
-              {slide.subtitle}
-            </p>
+            <motion.h1
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter"
+            >
+              {slides[current].title}
+            </motion.h1>
+            <motion.p
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="text-xl md:text-2xl text-white/90 font-light max-w-2xl"
+            >
+              {slides[current].subtitle}
+            </motion.p>
           </div>
-        </div>
-      ))}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Indicators */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">

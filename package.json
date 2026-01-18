@@ -12,9 +12,11 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.13.2",
+    "cloudinary": "^1.41.3",
     "framer-motion": "^12.23.26",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.561.0",
+    "multer-storage-cloudinary": "^4.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",

@@ -7,10 +7,14 @@ import toast from "react-hot-toast";
 import { fetchProducts } from "../../redux/slices/productsSlice";
 import ConfirmDialog from "./ConfirmDialog";
 
-export default function ProductList() {
+export default function ProductList({ categoryFilter }) {
   const dispatch = useDispatch();
 
   const { products, loading } = useSelector((state) => state.products);
+
+  const filteredProducts = categoryFilter
+    ? products.filter(p => p.category?.toLowerCase() === categoryFilter.toLowerCase())
+    : products;
 
   const [modal, setModal] = useState({
     isOpen: false,
@@ -65,11 +69,27 @@ export default function ProductList() {
         </div>
         <h3 className="text-lg font-semibold">No products yet</h3>
         <p className="text-sm text-muted-foreground">
-          Add your first product to get started
+          {categoryFilter
+            ? `No products found in ${categoryFilter}`
+            : "Add your first product to get started"}
         </p>
       </motion.div>
     );
   }
+
+  if (categoryFilter && !filteredProducts.length) {
+    return (
+      <div className="p-16 text-center text-muted-foreground">
+        No products found in <span className="font-bold">{categoryFilter}</span>.
+      </div>
+    )
+  }
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "https://placehold.co/100?text=No+Image";
+    if (imagePath.startsWith("http")) return imagePath;
+    return `${import.meta.env.VITE_API_BASE_URL}/${imagePath.replace(/\\/g, "/")}`;
+  };
 
   return (
     <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
@@ -87,7 +107,7 @@ export default function ProductList() {
 
           <tbody className="divide-y divide-neutral-200">
             <AnimatePresence>
-              {products.map((product, index) => (
+              {filteredProducts.map((product, index) => (
                 <motion.tr
                   key={product._id}
                   initial={{ opacity: 0, x: -10 }}
@@ -100,7 +120,7 @@ export default function ProductList() {
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg bg-neutral-100 flex-shrink-0 border border-neutral-200 overflow-hidden">
                         <img
-                          src={product.image}
+                          src={getImageUrl(product.image)}
                           alt={product.title}
                           className="w-full h-full object-cover"
                         />
@@ -126,8 +146,8 @@ export default function ProductList() {
 
                   <td className="p-4">
                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${product.stock > 10
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-amber-100 text-amber-700"
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-amber-100 text-amber-700"
                       }`}>
                       {product.stock} in stock
                     </span>

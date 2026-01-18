@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -30,16 +30,37 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [aiResults, setAiResults] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     dispatch(fetchProducts());
+
+    // Fetch categories to show all (even empty ones)
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
+        setCategories(data.map(c => c.name));
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+    fetchCategories();
   }, [dispatch]);
+
+  // Compute top 6 categories based on product count
+  // Use the fetched categories (limit to 6)
+  const displayCategories = useMemo(() => {
+    return categories.slice(0, 6);
+  }, [categories]);
 
   const handleAISearch = async () => {
     if (!search.trim()) return;
 
     try {
       setAiLoading(true);
+      setActiveCategory(null); // Clear category filter on AI search
       const res = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/search-ai`,
         { message: search }
@@ -63,11 +84,26 @@ export default function Home() {
     setSearch("");
     setAiResults(null);
     setAiLoading(false);
+    setActiveCategory(null);
   };
 
+  // Filter products: AI Results > Category Filter > Search Filter > All
+  const productsToShow = useMemo(() => {
+    if (aiResults) return aiResults;
 
+    let filtered = products;
 
-  const productsToShow = aiResults ?? products;
+    if (activeCategory) {
+      filtered = filtered.filter(p => p.category === activeCategory);
+    }
+
+    if (search) {
+      filtered = filtered.filter(p => p.title.toLowerCase().includes(search.toLowerCase()));
+    }
+
+    return filtered;
+  }, [products, aiResults, activeCategory, search]);
+
 
   return (
     <div className="min-h-screen">
@@ -84,7 +120,7 @@ export default function Home() {
               onChange={setSearch}
               onSearch={handleAISearch}
               onReset={handleResetSearch}
-              showReset={aiResults !== null}
+              showReset={aiResults !== null || search.length > 0}
               loading={aiLoading}
             />
           </div>
@@ -94,9 +130,28 @@ export default function Home() {
         <div className="bg-white/40 backdrop-blur-3xl border-t border-white/20 min-h-screen rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.02)] -mt-4 relative z-10">
           <div className="max-w-7xl mx-auto px-4 py-16 space-y-16">
 
-            <CategorySection />
+            <CategorySection
+              categories={displayCategories}
+              activeCategory={activeCategory}
+              onSelect={setActiveCategory}
+            />
 
             <div id="products-section" className="scroll-mt-20">
+              {/* Reset filter banner if active */}
+              {(activeCategory) && (
+                <div className="mb-6 flex items-center justify-between bg-primary/5 px-6 py-4 rounded-2xl border border-primary/10">
+                  <div>
+                    <h3 className="font-semibold text-primary">Showing results for <span className="text-foreground">"{activeCategory}"</span></h3>
+                  </div>
+                  <button
+                    onClick={() => setActiveCategory(null)}
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground hover:underline"
+                  >
+                    Clear filter
+                  </button>
+                </div>
+              )}
+
               {loading && (
                 <div className="flex flex-col items-center justify-center py-20">
                   <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
@@ -127,6 +182,13 @@ export default function Home() {
               )}
 
               <ProductGrid products={productsToShow} />
+
+              {!loading && productsToShow.length === 0 && (
+                <div className="text-center py-20">
+                  <p className="text-muted-foreground">No products found.</p>
+                  {activeCategory && <button onClick={() => setActiveCategory(null)} className="text-primary mt-2 hover:underline">Clear Filters</button>}
+                </div>
+              )}
             </div>
           </div>
         </div>
