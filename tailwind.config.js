@@ -15,27 +15,27 @@ export default {
     },
     extend: {
       colors: {
-        background: 'hsl(222.2 84% 4.9%)',
-        foreground: 'hsl(210 40% 98%)',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
 
-        card: 'hsl(222.2 84% 4.9%)',
-        'card-foreground': 'hsl(210 40% 98%)',
+        card: 'hsl(var(--card))',
+        'card-foreground': 'hsl(var(--card-foreground))',
 
-        primary: 'hsl(217.2 91.2% 59.8%)',
-        'primary-foreground': 'hsl(210 40% 98%)',
+        primary: 'hsl(var(--primary))',
+        'primary-foreground': 'hsl(var(--primary-foreground))',
 
-        secondary: 'hsl(217.2 32.6% 17.5%)',
-        'secondary-foreground': 'hsl(210 40% 98%)',
+        secondary: 'hsl(var(--secondary))',
+        'secondary-foreground': 'hsl(var(--secondary-foreground))',
 
-        muted: 'hsl(217.2 32.6% 17.5%)',
-        'muted-foreground': 'hsl(215 20.2% 65.1%)',
+        muted: 'hsl(var(--muted))',
+        'muted-foreground': 'hsl(var(--muted-foreground))',
 
-        accent: 'hsl(217.2 32.6% 17.5%)',
-        'accent-foreground': 'hsl(210 40% 98%)',
+        accent: 'hsl(var(--accent))',
+        'accent-foreground': 'hsl(var(--accent-foreground))',
 
-        border: 'hsl(217.2 32.6% 17.5%)',
-        input: 'hsl(217.2 32.6% 17.5%)',
-        ring: 'hsl(217.2 91.2% 59.8%)',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
       },
       borderRadius: {
         lg: "var(--radius)",

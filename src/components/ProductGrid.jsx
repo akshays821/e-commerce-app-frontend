@@ -3,12 +3,17 @@ import ProductCard from "./ProductCard";
 export default function ProductGrid({ products = [] }) {
   return (
     <section>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold text-foreground">
-          Products
-        </h2>
-        <span className="text-sm text-muted-foreground">
-          {products.length} products
+      <div className="flex items-end justify-between mb-8 px-2">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">
+            Featured Products
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Handpicked for you based on AI trends
+          </p>
+        </div>
+        <span className="px-3 py-1 bg-secondary/50 text-secondary-foreground text-xs font-medium rounded-full border border-border">
+          {products.length} Items
         </span>
       </div>
 

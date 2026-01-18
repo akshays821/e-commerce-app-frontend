@@ -23,15 +23,15 @@ export default function UserLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-const { isAuthenticated } = useSelector(
-  (state) => state.userAuth
-);
+  const { isAuthenticated } = useSelector(
+    (state) => state.userAuth
+  );
 
-useEffect(() => {
-  if (isAuthenticated) {
-    navigate("/");
-  }
-}, [isAuthenticated, navigate]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
 
   const handleLogin = async (e) => {
@@ -74,23 +74,24 @@ useEffect(() => {
   return (
     <div className="min-h-screen flex overflow-hidden">
       {/* Left side */}
-      <div className="w-full md:w-1/2 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col justify-center items-center px-6 py-12 relative">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-10 animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-cyan-500 rounded-full blur-3xl opacity-10 animate-pulse" />
+      {/* Left side */}
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 py-12 relative">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl opacity-50 animate-pulse pointer-events-none" />
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl opacity-50 animate-pulse pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-md">
           <div className="mb-10 text-center">
             <div className="text-5xl mb-3">🛒</div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               Shop AI
             </h1>
-            <p className="text-gray-400 mt-2 text-lg">
+            <p className="text-muted-foreground mt-2 text-lg">
               Let’s get you shopping
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 shadow-2xl border border-gray-700/50">
-            <h2 className="text-3xl font-bold text-center mb-8 text-white">
+          <div className="bg-card rounded-3xl p-8 shadow-xl border border-border">
+            <h2 className="text-3xl font-bold text-center mb-8 text-foreground">
               Welcome Back
             </h2>
 
@@ -100,7 +101,7 @@ useEffect(() => {
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                className="w-full px-4 py-3 rounded-full bg-input text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-blue-500 outline-none transition border border-border"
               />
 
               <div className="relative">
@@ -109,12 +110,12 @@ useEffect(() => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  className="w-full px-4 py-3 rounded-full bg-input text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-blue-500 outline-none transition border border-border"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-400"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-blue-500"
                 >
                   {showPassword ? "👁️" : "👁️‍🗨️"}
                 </button>
@@ -125,18 +126,18 @@ useEffect(() => {
                 disabled={loading}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-3 rounded-full font-semibold hover:scale-105 transition disabled:opacity-60"
+                className="w-full bg-primary text-primary-foreground py-3 rounded-full font-semibold hover:scale-105 transition disabled:opacity-60 shadow-lg"
               >
                 {loading
                   ? "Logging in..."
                   : isHovered
-                  ? "Let’s Go 🚀"
-                  : "Login"}
+                    ? "Let’s Go 🚀"
+                    : "Login"}
               </button>
 
-              <div className="text-center text-gray-400">
+              <div className="text-center text-muted-foreground">
                 Don’t have an account?{" "}
-                <span className="text-blue-400 hover:underline cursor-pointer">
+                <span onClick={() => navigate("/signup")} className="text-blue-600 hover:underline cursor-pointer font-medium">
                   Sign up
                 </span>
               </div>

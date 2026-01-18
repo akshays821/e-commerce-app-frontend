@@ -5,43 +5,45 @@ import { Edit, Trash2, Package } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { fetchProducts } from "../../redux/slices/productsSlice";
+import ConfirmDialog from "./ConfirmDialog";
 
 export default function ProductList() {
   const dispatch = useDispatch();
 
   const { products, loading } = useSelector((state) => state.products);
-  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+  const [modal, setModal] = useState({
+    isOpen: false,
+    productId: null,
+    title: ""
+  });
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    if (deleteConfirm !== id) {
-      setDeleteConfirm(id);
-      return;
-    }
+  const promptDelete = (product) => {
+    setModal({
+      isOpen: true,
+      productId: product._id,
+      title: product.title
+    });
+  };
 
+  const executeDelete = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${import.meta.env.VITE_API_BASE_URL}/api/products/${modal.productId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       toast.success("Product deleted");
-
-      // Refresh list after delete
       dispatch(fetchProducts());
     } catch {
       toast.error("Failed to delete product");
     } finally {
-      setDeleteConfirm(null);
+      setModal({ ...modal, isOpen: false });
     }
   };
 
@@ -70,20 +72,20 @@ export default function ProductList() {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur border border-border rounded-xl overflow-hidden text-white">
+    <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border bg-secondary/10">
-              <th className="p-4 text-left text-xs uppercase">Product</th>
-              <th className="p-4 text-left text-xs uppercase">Category</th>
-              <th className="p-4 text-left text-xs uppercase">Price</th>
-              <th className="p-4 text-left text-xs uppercase">Stock</th>
-              <th className="p-4 text-right text-xs uppercase">Actions</th>
+            <tr className="border-b border-neutral-200 bg-neutral-50">
+              <th className="p-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Product</th>
+              <th className="p-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Category</th>
+              <th className="p-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Price</th>
+              <th className="p-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">Stock</th>
+              <th className="p-4 text-right text-xs font-semibold text-neutral-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="divide-y divide-neutral-200">
             <AnimatePresence>
               {products.map((product, index) => (
                 <motion.tr
@@ -92,55 +94,58 @@ export default function ProductList() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ delay: index * 0.03 }}
-                  className="border-b border-border/50 hover:bg-secondary/5"
+                  className="hover:bg-neutral-50 transition-colors"
                 >
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="w-12 h-12 rounded-lg object-cover border"
-                      />
+                      <div className="w-12 h-12 rounded-lg bg-neutral-100 flex-shrink-0 border border-neutral-200 overflow-hidden">
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                       <div>
-                        <p className="font-medium text-sm">
+                        <p className="font-medium text-sm text-neutral-900">
                           {product.title}
                         </p>
-                        <p className="text-xs text-muted-foreground">
-                          ID: {product._id.slice(-6)}
+                        <p className="text-xs text-neutral-500 font-mono mt-0.5">
+                          #{product._id.slice(-6).toUpperCase()}
                         </p>
                       </div>
                     </div>
                   </td>
 
-                  <td className="p-4 text-sm text-muted-foreground">
-                    {product.category}
+                  <td className="p-4 text-sm text-neutral-600">
+                    <span className="capitalize">{product.category}</span>
                   </td>
 
-                  <td className="p-4 text-sm font-bold text-primary">
-                    ₹{product.price}
+                  <td className="p-4 text-sm font-medium text-neutral-900">
+                    ₹{product.price.toLocaleString()}
                   </td>
 
                   <td className="p-4">
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-primary/10 text-primary">
-                      {product.stock} items
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${product.stock > 10
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-amber-100 text-amber-700"
+                      }`}>
+                      {product.stock} in stock
                     </span>
                   </td>
 
                   <td className="p-4 text-right">
                     <div className="flex justify-end gap-2">
-                      <button className="px-3 py-1 text-xs rounded bg-primary/20 text-primary">
-                        <Edit size={14} />
+                      {/* Edit button placeholder if needed */}
+                      <button className="p-2 text-neutral-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
+                        <Edit size={16} />
                       </button>
 
                       <button
-                        onClick={() => handleDelete(product._id)}
-                        className={`px-3 py-1 text-xs rounded ${
-                          deleteConfirm === product._id
-                            ? "bg-red-600 text-white"
-                            : "bg-red-500/20 text-red-500"
-                        }`}
+                        onClick={() => promptDelete(product)}
+                        className="p-2 rounded-md transition-colors text-neutral-500 hover:text-red-600 hover:bg-red-50"
+                        title="Delete"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </td>
@@ -150,6 +155,16 @@ export default function ProductList() {
           </tbody>
         </table>
       </div>
+
+      <ConfirmDialog
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        onConfirm={executeDelete}
+        title="Delete Product"
+        message={`Are you sure you want to permanently delete "${modal.title}"? This action cannot be undone.`}
+        confirmText="Delete Product"
+        isDestructive={true}
+      />
     </div>
   );
 }

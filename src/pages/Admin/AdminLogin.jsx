@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { ShieldAlert, Fingerprint, Lock, ChevronRight } from "lucide-react";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -9,12 +10,13 @@ export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
-      toast.error("Enter email and password");
+      toast.error("Credentials required");
       return;
     }
 
@@ -29,11 +31,11 @@ export default function AdminLogin() {
       // Save token for protected admin requests
       localStorage.setItem("adminToken", res.data.token);
 
-      toast.success("Welcome back, Admin");
+      toast.success("Access Granted");
       navigate("/admin/dashboard");
     } catch (err) {
       toast.error(
-        err.response?.data?.message || "Admin login failed"
+        err.response?.data?.message || "Access Denied"
       );
     } finally {
       setLoading(false);
@@ -41,56 +43,78 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 text-white">
-      {/* subtle background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 font-['Outfit'] relative overflow-hidden">
+      {/* Soft Background Blobs */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-100/40 rounded-full blur-3xl pointer-events-none translate-x-1/2 translate-y-1/2" />
 
-      <div className="w-full max-w-md bg-card/60 backdrop-blur border border-border rounded-xl shadow-xl relative z-10">
-        <div className="p-8 space-y-6">
-          <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold">Admin Access</h1>
-            <p className="text-sm text-muted-foreground">
-              Restricted control panel
-            </p>
-          </div>
+      <div className="w-full max-w-md relative z-10">
+        <div className="bg-white/60 backdrop-blur-xl border border-white/50 shadow-2xl rounded-3xl overflow-hidden">
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-white">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@shopai.com"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-              />
+          <div className="p-8 pt-10">
+            <div className="mb-8 text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <ShieldAlert className="w-8 h-8 text-primary" />
+              </div>
+              <h1 className="text-2xl font-bold text-foreground tracking-tight mb-2">
+                Admin Access
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                Enter your credentials to manage the store
+              </p>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-white">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
+                  Email
+                </label>
+                <div className="relative group">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
+                    placeholder="admin@shopai.com"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-gray-50 rounded-lg text-gray-400 group-focus-within:text-primary group-focus-within:bg-primary/10 transition-colors">
+                    <Fingerprint size={16} />
+                  </div>
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg font-medium hover:bg-primary/90 transition disabled:opacity-60"
-            >
-              {loading ? "Accessing…" : "Access Admin Panel"}
-            </button>
-          </form>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
+                  Password
+                </label>
+                <div className="relative group">
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-foreground placeholder:text-gray-400 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all tracking-widest"
+                    placeholder="••••••••"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-gray-50 rounded-lg text-gray-400 group-focus-within:text-primary group-focus-within:bg-primary/10 transition-colors">
+                    <Lock size={16} />
+                  </div>
+                </div>
+              </div>
 
-          <div className="text-xs text-muted-foreground text-center pt-4 border-t border-border">
-            Unauthorized access attempts are logged
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-bold text-sm tracking-wide uppercase shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
+              >
+                {loading ? (
+                  <span>Authenticating...</span>
+                ) : (
+                  <>
+                    Login to Dashboard <ChevronRight size={16} />
+                  </>
+                )}
+              </button>
+            </form>
           </div>
         </div>
       </div>

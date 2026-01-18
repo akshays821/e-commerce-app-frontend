@@ -1,68 +1,62 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import AdminHeader from "../../components/admin/AdminHeader";
-import ProductList from "../../components/admin/ProductList";
-import ProductForm from "../../components/admin/ProductForm";
-import { Plus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import DashboardStats from "../../components/admin/DashboardStats";
+import ProductManager from "../../components/admin/ProductManager";
+import UserManagement from "../../components/admin/UserManagement";
 
 export default function AdminDashboard() {
-  const [showAddForm, setShowAddForm] = useState(false);
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Check auth
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/admin/login");
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    navigate("/admin/login");
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return <DashboardStats />;
+      case "products":
+        return <ProductManager />;
+      case "users":
+        return <UserManagement />;
+      case "settings":
+        return (
+          <div className="p-8 text-center text-muted-foreground">
+            <h2 className="text-2xl font-bold mb-2">Settings</h2>
+            <p>System configuration coming soon.</p>
+          </div>
+        );
+      default:
+        return <DashboardStats />;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background text-white">
-      <AdminHeader />
+    <div className="min-h-screen bg-[#F8F9FC] flex font-['Outfit']">
+      {/* Sidebar */}
+      <AdminSidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onLogout={handleLogout}
+      />
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-start mb-8">
-          <div>
-            <span className="text-xs font-bold px-2 py-1 rounded-full bg-primary/20 text-primary">
-              Admin Panel
-            </span>
-            <h1 className="text-4xl font-bold mt-2 text-white">Product Management</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage and organize your product catalog
-            </p>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowAddForm(true)}
-            className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow-lg"
-          >
-            <Plus size={18} />
-            Add Product
-          </motion.button>
+      {/* Main Content */}
+      <main className="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+        <div className="max-w-7xl mx-auto">
+          {renderContent()}
         </div>
-
-        <ProductList />
       </main>
-
-      <AnimatePresence>
-        {showAddForm && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowAddForm(false)}
-            />
-
-            {/* Slide Panel */}
-            <motion.div
-              className="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-card z-50 border-l border-border shadow-2xl overflow-y-auto"
-              initial={{ x: 400 }}
-              animate={{ x: 0 }}
-              exit={{ x: 400 }}
-              transition={{ type: "spring", damping: 20 }}
-            >
-              <ProductForm onClose={() => setShowAddForm(false)} />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

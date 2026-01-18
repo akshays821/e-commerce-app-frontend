@@ -19,7 +19,7 @@ export default function SearchBar({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Search products..."
-            className="flex-1 bg-transparent outline-none text-white"
+            className="flex-1 bg-transparent outline-none text-foreground"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 onSearch();
@@ -34,36 +34,36 @@ export default function SearchBar({
           )}
         </div>
 
-       <div className="flex gap-2">
-  <button
-  onClick={onSearch}
-  disabled={loading}
-  className={`px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 transition-all
+        <div className="flex gap-2">
+          <button
+            onClick={onSearch}
+            disabled={loading}
+            className={`px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2 transition-all
     ${loading
-      ? "bg-primary/70 cursor-not-allowed"
-      : "bg-primary hover:scale-105"}
+                ? "bg-primary/70 cursor-not-allowed"
+                : "bg-primary hover:scale-105"}
   `}
->
-  {loading ? (
-    <>
-      <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-      Searching…
-    </>
-  ) : (
-    "Search"
-  )}
-</button>
+          >
+            {loading ? (
+              <>
+                <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                Searching…
+              </>
+            ) : (
+              "Search"
+            )}
+          </button>
 
 
-  {showReset && (
-    <button
-      onClick={onReset}
-      className="px-4 py-3 rounded-xl border text-sm font-medium text-white"
-    >
-      Reset
-    </button>
-  )}
-</div>
+          {showReset && (
+            <button
+              onClick={onReset}
+              className="px-4 py-3 rounded-xl border text-sm font-medium text-foreground"
+            >
+              Reset
+            </button>
+          )}
+        </div>
 
       </div>
 

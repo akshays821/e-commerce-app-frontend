@@ -25,8 +25,8 @@ export default function ProductForm({ onClose }) {
       [name]: files ? files[0] : value, // if file input , store file , else normal value
     });
   };
-  
-// manual validation to replace browser "requiired popups"
+
+  // manual validation to replace browser "requiired popups"
   const validate = () => {
     if (!form.title || !form.price || !form.category || !form.stock) {
       toast.error("Please fill all required fields");
@@ -84,7 +84,7 @@ export default function ProductForm({ onClose }) {
 
   return (
     <motion.div
-      className="h-full flex flex-col text-white"
+      className="h-full flex flex-col text-foreground"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -98,7 +98,7 @@ export default function ProductForm({ onClose }) {
         </div>
         <button
           onClick={onClose}
-          className="bg-gray-700 text-white rounded-full p-2 hover:bg-gray-600"
+          className="bg-secondary text-secondary-foreground rounded-full p-2 hover:bg-muted"
         >
           ✕
         </button>
@@ -109,7 +109,7 @@ export default function ProductForm({ onClose }) {
           name="title"
           placeholder="Product title *"
           onChange={handleChange}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full bg-input border border-input rounded-lg px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none"
         />
 
         <input
@@ -117,7 +117,7 @@ export default function ProductForm({ onClose }) {
           type="number"
           placeholder="Price *"
           onChange={handleChange}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full bg-input border border-input rounded-lg px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none"
         />
 
         <input
@@ -125,24 +125,24 @@ export default function ProductForm({ onClose }) {
           type="number"
           placeholder="Stock *"
           onChange={handleChange}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full bg-input border border-input rounded-lg px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none"
         />
 
         <select
           name="category"
           onChange={handleChange}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full bg-input border border-input rounded-lg px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none"
         >
-          <option value="" className="bg-gray-800">
+          <option value="" className="bg-card">
             Select category *
           </option>
-          <option value="electronics" className="bg-gray-800">
+          <option value="electronics" className="bg-card">
             Electronics
           </option>
-          <option value="clothing" className="bg-gray-800">
+          <option value="clothing" className="bg-card">
             Clothing
           </option>
-          <option value="accessories" className="bg-ray-800">
+          <option value="accessories" className="bg-card">
             Accessories
           </option>
         </select>
@@ -151,7 +151,7 @@ export default function ProductForm({ onClose }) {
           name="description"
           placeholder="Description"
           onChange={handleChange}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full bg-input border border-input rounded-lg px-3 py-2 text-foreground focus:ring-2 focus:ring-primary outline-none"
         />
 
         <input
@@ -165,7 +165,7 @@ export default function ProductForm({ onClose }) {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-primary text-white py-2 rounded-lg"
+            className="flex-1 bg-primary text-primary-foreground py-2 rounded-lg"
           >
             {loading ? "Adding..." : "Add Product"}
           </button>
@@ -173,7 +173,7 @@ export default function ProductForm({ onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600"
+            className="flex-1 bg-secondary text-secondary-foreground py-2 rounded-lg hover:bg-muted"
           >
             Cancel
           </button>

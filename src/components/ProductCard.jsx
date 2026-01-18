@@ -7,19 +7,14 @@ export default function ProductCard({ product }) {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group bg-card rounded-2xl border border-border overflow-hidden transition-all duration-300 ${
-        isHovered
-          ? "shadow-xl shadow-primary/5 border-primary/20 -translate-y-1"
-          : "shadow-lg shadow-black/10"
-      }`}
+      className={`group bg-card rounded-2xl border border-transparent hover:border-border/60 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-2`}
     >
       <div className="relative aspect-square bg-secondary/30 overflow-hidden">
         <img
           src={product.image || "/placeholder.png"}
           alt={product.title}
-          className={`w-full h-full object-cover transition-transform duration-500 ${
-            isHovered ? "scale-105" : "scale-100"
-          }`}
+          className={`w-full h-full object-cover transition-transform duration-500 ${isHovered ? "scale-105" : "scale-100"
+            }`}
         />
 
         {product.category && (

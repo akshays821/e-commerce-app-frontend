@@ -65,73 +65,71 @@ export default function Home() {
     setAiLoading(false);
   };
 
-  const handleAuthAction = () => {
-    if (isAuthenticated) {
-      dispatch(logout());
-      toast.success("Logged out successfully");
-    } else {
-      navigate("/login");
-    }
-  };
+
 
   const productsToShow = aiResults ?? products;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Header />
 
-      {/* Auth action button */}
-      <div className="max-w-7xl mx-auto px-4 pt-4 flex justify-end">
-        <button
-          onClick={handleAuthAction}
-          className="text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-muted transition text-white bg-yellow-800"
-        >
-          {isAuthenticated ? "Logout" : "Login"}
-        </button>
-      </div>
+      <main>
+        {/* Hero Section with Search integrated visually */}
+        <div className="relative pb-12 pt-32">
+          <HeroSection />
 
-      <main className="max-w-7xl mx-auto px-4 pb-16">
-        <HeroSection />
+          <div className="max-w-2xl mx-auto px-4 -mt-8 relative z-20">
+            <SearchBar
+              value={search}
+              onChange={setSearch}
+              onSearch={handleAISearch}
+              onReset={handleResetSearch}
+              showReset={aiResults !== null}
+              loading={aiLoading}
+            />
+          </div>
+        </div>
 
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          onSearch={handleAISearch}
-          onReset={handleResetSearch}
-          showReset={aiResults !== null}
-          loading={aiLoading}
-        />
+        {/* Categories & Products Section - White Card Effect */}
+        <div className="bg-white/40 backdrop-blur-3xl border-t border-white/20 min-h-screen rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.02)] -mt-4 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 py-16 space-y-16">
 
-        <CategorySection />
+            <CategorySection />
 
-        {loading && (
-          <p className="text-center text-muted-foreground">
-            Loading products...
-          </p>
-        )}
+            <div id="products-section" className="scroll-mt-20">
+              {loading && (
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+                  <p className="text-muted-foreground font-medium">Loading products...</p>
+                </div>
+              )}
 
-        {error && (
-          <p className="text-center text-red-500">
-            Failed to load products
-          </p>
-        )}
+              {error && (
+                <div className="text-center py-20 bg-red-50 rounded-2xl border border-red-100">
+                  <p className="text-red-500 font-medium">Failed to load products</p>
+                </div>
+              )}
 
-        {aiLoading && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-card px-6 py-4 rounded-2xl flex items-center gap-3 shadow-2xl">
-              <Lottie
-                animationData={searchAnimation}
-                loop
-                className="w-28 h-28 opacity-90 mix-blend-lighten"
-              />
-              <p className="text-sm font-medium text-foreground">
-                AI is finding the best results…
-              </p>
+              {aiLoading && (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                  <div className="bg-card px-8 py-6 rounded-3xl flex flex-col items-center gap-4 shadow-2xl animate-in fade-in zoom-in duration-300">
+                    <Lottie
+                      animationData={searchAnimation}
+                      loop
+                      className="w-32 h-32 opacity-90 mix-blend-multiply"
+                    />
+                    <div className="text-center">
+                      <h3 className="text-lg font-bold text-foreground">AI is thinking...</h3>
+                      <p className="text-sm text-muted-foreground">Finding the best matches for you</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <ProductGrid products={productsToShow} />
             </div>
           </div>
-        )}
-
-        <ProductGrid products={productsToShow} />
+        </div>
       </main>
     </div>
   );

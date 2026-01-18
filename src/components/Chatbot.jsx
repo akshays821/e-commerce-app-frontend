@@ -90,7 +90,7 @@ export default function Chatbot() {
       {/* CHAT WINDOW */}
       {isOpen && (
         <div className="fixed bottom-6 right-6 w-80 h-96 bg-white shadow-xl rounded-lg flex flex-col z-50">
-          <div className="p-3 bg-blue-600 text-white flex justify-between items-center rounded-t-lg">
+          <div className="p-3 bg-primary text-primary-foreground flex justify-between items-center rounded-t-lg">
             <span>AI Assistant</span>
             <button onClick={toggleChat}>✖</button>
           </div>
@@ -121,11 +121,10 @@ export default function Chatbot() {
               return (
                 <div
                   key={idx}
-                  className={`p-2 rounded-lg text-sm w-fit ${
-                    msg.sender === "user"
-                      ? "bg-blue-500 text-white ml-auto"
-                      : "bg-gray-200 text-black"
-                  }`}
+                  className={`p-2 rounded-lg text-sm w-fit ${msg.sender === "user"
+                      ? "bg-primary/90 text-primary-foreground ml-auto"
+                      : "bg-muted text-foreground"
+                    }`}
                 >
                   {msg.text}
                 </div>
@@ -133,7 +132,7 @@ export default function Chatbot() {
             })}
 
             {loading && (
-              <div className="text-gray-500 text-sm">AI typing...</div>
+              <div className="text-muted-foreground text-sm">AI typing...</div>
             )}
 
             <div ref={bottomRef} />
@@ -151,7 +150,7 @@ export default function Chatbot() {
             />
             <button
               onClick={sendMessage}
-              className="bg-blue-600 text-white px-4 rounded"
+              className="bg-primary text-primary-foreground px-4 rounded"
             >
               ➤
             </button>
