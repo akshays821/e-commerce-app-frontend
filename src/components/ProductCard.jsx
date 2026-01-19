@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -39,46 +40,48 @@ export default function ProductCard({ product }) {
   const bgClass = getColor(product._id);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-      viewport={{ once: true }}
-      className={`group relative bg-gradient-to-br ${bgClass} rounded-2xl border border-white/60 shadow-sm hover:shadow-xl hover:shadow-black/5 overflow-hidden`}
-    >
-      <div className="relative aspect-square overflow-hidden bg-white">
-        <img
-          src={getImageUrl(product.image)}
-          alt={product.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+    <Link to={`/product/${product._id}`} className="block h-full">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        whileHover={{ y: -8 }}
+        transition={{ duration: 0.3 }}
+        viewport={{ once: true }}
+        className={`group relative bg-gradient-to-br ${bgClass} rounded-2xl border border-white/60 shadow-sm hover:shadow-xl hover:shadow-black/5 overflow-hidden h-full`}
+      >
+        <div className="relative aspect-square overflow-hidden bg-white">
+          <img
+            src={getImageUrl(product.image)}
+            alt={product.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
 
-        {product.category && (
-          <div className="absolute top-3 left-3">
-            <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-xs font-semibold text-neutral-700 rounded-full shadow-sm">
-              {product.category}
-            </span>
-          </div>
-        )}
+          {product.category && (
+            <div className="absolute top-3 left-3">
+              <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-xs font-semibold text-neutral-700 rounded-full shadow-sm">
+                {product.category}
+              </span>
+            </div>
+          )}
 
-        {/* Overlay on hover */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
-      </div>
-
-      <div className="p-5">
-        <h3 className="font-semibold text-neutral-800 text-lg mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-          {product.title}
-        </h3>
-        <div className="flex items-center justify-between">
-          <p className="text-xl font-bold text-primary">
-            ₹{product.price}
-          </p>
-          <button className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-            +
-          </button>
+          {/* Overlay on hover */}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
         </div>
-      </div>
-    </motion.div>
+
+        <div className="p-5">
+          <h3 className="font-semibold text-neutral-800 text-lg mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+            {product.title}
+          </h3>
+          <div className="flex items-center justify-between">
+            <p className="text-xl font-bold text-primary">
+              ₹{product.price}
+            </p>
+            <button className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+              +
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </Link>
   );
 }

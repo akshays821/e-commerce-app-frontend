@@ -10,8 +10,14 @@ import UserSignup from "./pages/UserSignup"
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UserLogin from "./pages/UserLogin";
+import ProductDetails from "./pages/ProductDetails";
+
+import { useAuthCheck } from "./hooks/useAuthCheck";
+import BannedAccountModal from "./components/BannedAccountModal";
+import GlobalModal from "./components/GlobalModal";
 
 function AppContent() {
+  useAuthCheck();
   const location = useLocation();
 
   const hideChatbot =
@@ -20,10 +26,13 @@ function AppContent() {
 
   return (
     <>
+      <BannedAccountModal />
+      <GlobalModal />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<UserSignup />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
 
 
         <Route path="/admin/login" element={<AdminLogin />} />

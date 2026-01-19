@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import chatbotAvatar from "../assets/chatbot.png";
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,9 +55,10 @@ export default function Chatbot() {
         ]);
       }
     } catch (error) {
+      const errorMessage = error.response?.data?.message || "Error contacting assistant.";
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: "Error contacting assistant." },
+        { sender: "bot", text: errorMessage },
       ]);
     }
 
@@ -70,28 +72,40 @@ export default function Chatbot() {
         {!isOpen && (
           <motion.button
             key="chat-button"
-            initial={{ scale: 0, rotate: -45 }}
+            initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
-            exit={{ scale: 0, rotate: 45 }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
+            exit={{ scale: 0, rotate: 180 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleChat}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2
-                     bg-primary text-primary-foreground
-                     px-5 py-3.5 rounded-full font-medium
-                     shadow-lg shadow-primary/25
-                     hover:shadow-xl hover:shadow-primary/30
-                     transition-shadow duration-300"
+            className="fixed bottom-6 right-6 z-50 group pointer-events-auto"
           >
-            <Sparkles
-              className={`w-5 h-5 ${isHovered ? "animate-pulse" : ""}`}
-            />
-            <span>Ask AI</span>
+            {/* Pulsing outer glow */}
+            <div className="absolute inset-0 bg-indigo-500/30 rounded-full blur-xl animate-pulse group-hover:bg-indigo-500/50 transition-colors duration-500" />
 
-            {/* subtle ping */}
-            <span className="absolute inset-0 rounded-full bg-primary/20 animate-ping opacity-20 pointer-events-none" />
+            {/* Main Container with Gradient */}
+            <div className="relative w-16 h-16 rounded-full p-0.5 bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 shadow-2xl shadow-indigo-500/40 transform transition-transform duration-300 group-hover:-translate-y-1">
+
+              {/* Inner Glassy Container */}
+              <div className="w-full h-full rounded-full bg-black/20 backdrop-blur-sm overflow-hidden border border-white/20 flex items-center justify-center p-1 relative">
+
+                {/* Shiny reflection effect */}
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/20 to-transparent opacity-50 z-10 pointer-events-none rounded-t-full" />
+
+                <img
+                  src={chatbotAvatar}
+                  alt="Chatbot"
+                  className="w-full h-full object-cover rounded-full bg-white/90 shadow-inner"
+                />
+              </div>
+
+              {/* Online Status */}
+              <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-[3px] border-white rounded-full shadow-md z-20">
+                <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75"></span>
+              </span>
+            </div>
           </motion.button>
         )}
 
@@ -107,7 +121,9 @@ export default function Chatbot() {
           >
             <div className="p-3 bg-primary text-primary-foreground flex justify-between items-center bg-gradient-to-r from-primary to-primary/90">
               <span className="font-semibold flex items-center gap-2">
-                <Sparkles size={16} />
+                <div className="w-8 h-8 rounded-full overflow-hidden border border-white/50 bg-white">
+                  <img src={chatbotAvatar} alt="AI" className="w-full h-full object-cover" />
+                </div>
                 AI Assistant
               </span>
               <button onClick={toggleChat} className="hover:bg-primary-foreground/20 rounded-full p-1 transition-colors">✖</button>

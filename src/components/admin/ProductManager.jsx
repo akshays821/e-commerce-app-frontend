@@ -6,6 +6,17 @@ import ProductForm from "./ProductForm";
 
 export default function ProductManager() {
     const [showAddForm, setShowAddForm] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
+
+    const handleEdit = (product) => {
+        setEditingProduct(product);
+        setShowAddForm(true);
+    };
+
+    const handleClose = () => {
+        setShowAddForm(false);
+        setEditingProduct(null);
+    };
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -20,7 +31,10 @@ export default function ProductManager() {
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowAddForm(true)}
+                    onClick={() => {
+                        setEditingProduct(null);
+                        setShowAddForm(true);
+                    }}
                     className="flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all"
                 >
                     <Plus size={18} />
@@ -28,7 +42,7 @@ export default function ProductManager() {
                 </motion.button>
             </div>
 
-            <ProductList />
+            <ProductList onEdit={handleEdit} />
 
             {/* Modal Logic moved here */}
             <AnimatePresence>
@@ -39,7 +53,7 @@ export default function ProductManager() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onClick={() => setShowAddForm(false)}
+                            onClick={handleClose}
                         />
                         <motion.div
                             className="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-background z-[70] border-l border-border shadow-2xl overflow-y-auto"
@@ -48,7 +62,7 @@ export default function ProductManager() {
                             exit={{ x: "100%" }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
                         >
-                            <ProductForm onClose={() => setShowAddForm(false)} />
+                            <ProductForm onClose={handleClose} productToEdit={editingProduct} />
                         </motion.div>
                     </>
                 )}

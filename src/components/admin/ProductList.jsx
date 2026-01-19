@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { fetchProducts } from "../../redux/slices/productsSlice";
 import ConfirmDialog from "./ConfirmDialog";
 
-export default function ProductList({ categoryFilter }) {
+export default function ProductList({ categoryFilter, onEdit }) {
   const dispatch = useDispatch();
 
   const { products, loading } = useSelector((state) => state.products);
@@ -155,8 +155,11 @@ export default function ProductList({ categoryFilter }) {
 
                   <td className="p-4 text-right">
                     <div className="flex justify-end gap-2">
-                      {/* Edit button placeholder if needed */}
-                      <button className="p-2 text-neutral-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
+                      {/* Edit button */}
+                      <button
+                        onClick={() => onEdit(product)}
+                        className="p-2 text-neutral-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                      >
                         <Edit size={16} />
                       </button>
 

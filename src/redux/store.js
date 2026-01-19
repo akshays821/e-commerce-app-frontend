@@ -4,10 +4,12 @@ import storage from "redux-persist/lib/storage"; // localStorage
 
 import productReducer from "./slices/productsSlice.js";
 import userAuthReducer from "./slices/userAuthSlice";
+import uiReducer from "./slices/uiSlice";
 
 const rootReducer = combineReducers({
   products: productReducer,
   userAuth: userAuthReducer,
+  ui: uiReducer,
 });
 
 const persistConfig = {
