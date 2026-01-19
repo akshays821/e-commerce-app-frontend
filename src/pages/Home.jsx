@@ -156,9 +156,13 @@ export default function Home() {
               )}
 
               {loading && (
-                <div className="flex flex-col items-center justify-center py-20">
-                  <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
-                  <p className="text-muted-foreground font-medium">Loading products...</p>
+                <div className="flex flex-col items-center justify-center py-20 min-h-[400px]">
+                  <Lottie
+                    animationData={searchAnimation}
+                    loop={true}
+                    className="w-48 h-48 opacity-80 mix-blend-multiply"
+                  />
+                  <p className="text-muted-foreground font-medium mt-4">Curating products for you...</p>
                 </div>
               )}
 
@@ -187,9 +191,29 @@ export default function Home() {
               <ProductGrid products={productsToShow} />
 
               {!loading && productsToShow.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-muted-foreground">No products found.</p>
-                  {activeCategory && <button onClick={() => setActiveCategory(null)} className="text-primary mt-2 hover:underline">Clear Filters</button>}
+                <div className="flex flex-col items-center justify-center py-20">
+                  <Lottie
+                    animationData={searchAnimation} // Reusing the search animation for empty state
+                    loop={false} // Play once then stop roughly
+                    className="w-64 h-64 opacity-50 grayscale"
+                  />
+                  <h3 className="text-xl font-semibold text-foreground mt-4">No products found</h3>
+                  <p className="text-muted-foreground mt-2 mb-6 max-w-sm text-center">
+                    We couldn't find matches for <span className="font-medium text-foreground">"{activeCategory || search}"</span>.
+                  </p>
+
+                  {(activeCategory || search) && (
+                    <button
+                      onClick={() => {
+                        setActiveCategory(null);
+                        setSearch("");
+                        handleResetSearch();
+                      }}
+                      className="px-6 py-2.5 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/20 hover:scale-105"
+                    >
+                      Clear All Filters
+                    </button>
+                  )}
                 </div>
               )}
             </div>
