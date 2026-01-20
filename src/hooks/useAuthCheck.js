@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { logout } from "../redux/slices/userAuthSlice";
 import { triggerBannedModal } from "../redux/slices/uiSlice";
+import { fetchCart } from "../redux/slices/cartSlice";
 
 export const useAuthCheck = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,9 @@ export const useAuthCheck = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        
+        // If auth is valid, fetch user's cart
+        dispatch(fetchCart());
       } catch (error) {
         if (error.response) {
             if (error.response.status === 403) {

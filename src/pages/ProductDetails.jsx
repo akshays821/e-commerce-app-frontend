@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { addItemToCart } from "../redux/slices/cartSlice";
+import toast from "react-hot-toast";
 import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, Star } from "lucide-react";
 
 export default function ProductDetails() {
@@ -10,6 +13,34 @@ export default function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeSize, setActiveSize] = useState(null);
+    const dispatch = useDispatch();
+    const { isAuthenticated } = useSelector((state) => state.userAuth);
+
+    const handleAddToCart = () => {
+        if (!isAuthenticated) {
+            toast.error("Please login to add items to cart");
+            navigate("/login");
+            return;
+        }
+
+        // If product needs size, check if size is selected
+        const isFashionItem = product.category?.some(cat => /fashion|clothing|shoes|jacket|shirt|pant|wear|sneaker|boot|hoodie|heels|jeans/i.test(cat));
+
+        if (isFashionItem && !activeSize) {
+            toast.error("Please select a size first!");
+            return;
+        }
+
+        dispatch(addItemToCart({
+            _id: product._id,
+            name: product.title,
+            price: product.price,
+            image: getImageUrl(product.image),
+            selectedSize: activeSize,
+            category: product.category ? product.category[0] : 'General',
+            quantity: 1
+        }));
+    };
 
     // Fallback sizes if not in product data (Mocking for UI completeness)
     const sizes = ["S", "M", "L", "XL"];
@@ -74,6 +105,16 @@ export default function ProductDetails() {
                     className="w-12 h-12 bg-white/50 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center hover:bg-white transition-all shadow-sm hover:shadow-md pointer-events-auto"
                 >
                     <ArrowLeft size={20} className="text-neutral-700" />
+                </motion.button>
+                <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    onClick={() => navigate('/cart')}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="w-12 h-12 bg-white/50 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center hover:bg-white transition-all shadow-sm hover:shadow-md pointer-events-auto text-indigo-600"
+                >
+                    <ShoppingBag size={20} />
                 </motion.button>
             </nav>
 
@@ -205,6 +246,7 @@ export default function ProductDetails() {
                             {/* Action Buttons */}
                             <div className="flex items-center gap-4 pt-4">
                                 <motion.button
+                                    onClick={handleAddToCart}
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.95 }}
                                     className="flex-[2] bg-indigo-600 hover:bg-indigo-700 text-white h-16 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-indigo-200 transition-colors"

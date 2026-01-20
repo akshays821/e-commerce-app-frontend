@@ -11,6 +11,7 @@ import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UserLogin from "./pages/UserLogin";
 import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
 
 import { useAuthCheck } from "./hooks/useAuthCheck";
 import BannedAccountModal from "./components/BannedAccountModal";
@@ -33,6 +34,7 @@ function AppContent() {
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<UserSignup />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<Cart />} />
 
 
         <Route path="/admin/login" element={<AdminLogin />} />
