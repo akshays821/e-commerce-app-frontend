@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "../redux/slices/cartSlice";
 import toast from "react-hot-toast";
-import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, Star } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, Star, Plus } from "lucide-react";
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -15,6 +15,10 @@ export default function ProductDetails() {
     const [activeSize, setActiveSize] = useState(null);
     const dispatch = useDispatch();
     const { isAuthenticated } = useSelector((state) => state.userAuth);
+    const { cartItems } = useSelector((state) => state.cart);
+
+    // Check if this product is already in the cart
+    const productsInCart = product && cartItems?.some((item) => item._id === product._id);
 
     const handleAddToCart = () => {
         if (!isAuthenticated) {
@@ -160,6 +164,24 @@ export default function ProductDetails() {
 
                     {/* Right Column: Lively Product Details */}
                     <div className="flex flex-col justify-center space-y-8 relative">
+
+                        {/* In Cart Indicator (Floating Top Right) */}
+                        {productsInCart && (
+                            <motion.button
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                whileHover={{ scale: 1.1 }}
+                                onClick={() => navigate('/cart')}
+                                className="absolute top-0 right-0 z-10 p-3 bg-emerald-50 text-emerald-600 rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md hover:bg-emerald-100 transition-all"
+                                title="This item is in your cart"
+                            >
+                                <ShoppingBag size={24} />
+                                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 border-2 border-white"></span>
+                                </span>
+                            </motion.button>
+                        )}
 
                         {/* Live Counter Badge */}
                         <motion.div

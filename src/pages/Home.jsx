@@ -14,6 +14,9 @@ import HeroSection from "../components/HeroSection";
 import CategorySection from "../components/CategorySection";
 import SearchBar from "../components/SearchBar";
 import ProductGrid from "../components/ProductGrid";
+import TrustBadges from "../components/TrustBadges";
+import WhyChooseUs from "../components/WhyChooseUs";
+import Footer from "../components/Footer";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -219,7 +222,18 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Why Choose Us - Narrative Section */}
+        <WhyChooseUs />
+
+        {/* Trust Badges - Premium Section */}
+        <div className="relative z-10">
+          <TrustBadges />
+        </div>
+
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -13,7 +13,12 @@ export default function ProductList({ categoryFilter, onEdit }) {
   const { products, loading } = useSelector((state) => state.products);
 
   const filteredProducts = categoryFilter
-    ? products.filter(p => p.category?.toLowerCase() === categoryFilter.toLowerCase())
+    ? products.filter(p => {
+      if (Array.isArray(p.category)) {
+        return p.category.some(c => c.toLowerCase() === categoryFilter.toLowerCase());
+      }
+      return p.category?.toLowerCase() === categoryFilter.toLowerCase();
+    })
     : products;
 
   const [modal, setModal] = useState({
@@ -137,7 +142,11 @@ export default function ProductList({ categoryFilter, onEdit }) {
                   </td>
 
                   <td className="p-4 text-sm text-neutral-600">
-                    <span className="capitalize">{product.category}</span>
+                    <span className="capitalize">
+                      {Array.isArray(product.category)
+                        ? product.category.join(", ")
+                        : product.category}
+                    </span>
                   </td>
 
                   <td className="p-4 text-sm font-medium text-neutral-900">
@@ -156,12 +165,14 @@ export default function ProductList({ categoryFilter, onEdit }) {
                   <td className="p-4 text-right">
                     <div className="flex justify-end gap-2">
                       {/* Edit button */}
-                      <button
-                        onClick={() => onEdit(product)}
-                        className="p-2 text-neutral-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                      >
-                        <Edit size={16} />
-                      </button>
+                      {onEdit && (
+                        <button
+                          onClick={() => onEdit(product)}
+                          className="p-2 text-neutral-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                        >
+                          <Edit size={16} />
+                        </button>
+                      )}
 
                       <button
                         onClick={() => promptDelete(product)}
