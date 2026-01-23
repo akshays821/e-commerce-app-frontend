@@ -7,6 +7,7 @@ import { store, persistor } from "./redux/store";
 import Home from "./pages/Home";
 import Chatbot from "./components/Chatbot";
 import UserSignup from "./pages/UserSignup"
+import VerifyEmail from "./pages/VerifyEmail";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UserLogin from "./pages/UserLogin";
@@ -33,6 +34,7 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<UserSignup />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
 

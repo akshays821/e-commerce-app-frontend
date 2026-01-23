@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { LogOut, Shield } from "lucide-react";
+import logo from "../../assets/logo2.png";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminHeader() {
@@ -24,12 +25,10 @@ export default function AdminHeader() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center font-['Outfit']">
 
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary" />
-          </div>
-          <h1 className="text-lg font-bold text-foreground tracking-tight">
-            ShopAI Admin
-          </h1>
+          <img src={logo} alt="ShopAI Admin" className="h-10 w-auto object-contain" />
+          <span className="text-sm font-medium text-muted-foreground border-l pl-3 ml-2 border-gray-200">
+            Admin Panel
+          </span>
         </div>
 
         <motion.button

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Github, Linkedin, Mail, Lock } from "lucide-react";
+import logo from "../assets/logo2.png";
+
 import AdminDemoModal from "./AdminDemoModal";
 
 export default function Footer() {
@@ -27,16 +29,15 @@ export default function Footer() {
 
                         {/* Column 1: Brand */}
                         <div className="space-y-6">
-                            <Link to="/" className="flex items-center gap-2 group">
-                                <div className="w-10 h-10 bg-neutral-800 rounded-xl flex items-center justify-center text-white border border-neutral-700 group-hover:scale-110 transition-transform shadow-lg shadow-black/20">
-                                    <span className="font-bold text-xl">S</span>
-                                </div>
-                                <span className="text-2xl font-bold text-neutral-200 tracking-tight">
-                                    ShopAI
-                                </span>
+                            <Link to="/" className="block">
+                                <img
+                                    src={logo}
+                                    alt="ShopAI"
+                                    className="h-24 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+                                />
                             </Link>
                             <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">
-                                AI-powered modern e-commerce platform designed for performance, aesthetics, and user experience.
+                               Smart Shopping , Powered By AI
                             </p>
                         </div>
 

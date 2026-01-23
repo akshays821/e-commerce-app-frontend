@@ -8,6 +8,8 @@ import {
   loginStart,
   loginSuccess,
   loginFailure,
+  registerSuccess,
+  clearError,
 } from "../redux/slices/userAuthSlice";
 
 import cartImage from "../assets/cart.png";
@@ -27,6 +29,11 @@ export default function UserLogin() {
   const { isAuthenticated } = useSelector(
     (state) => state.userAuth
   );
+
+  useEffect(() => {
+    dispatch(clearError());
+    dispatch(registerSuccess()); // Force loading false on mount
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAuthenticated) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +8,8 @@ import {
   loginStart,
   loginSuccess,
   loginFailure,
+  registerSuccess,
+  clearError,
 } from "../redux/slices/userAuthSlice";
 
 import cartImage from "../assets/cart.png";
@@ -17,6 +19,11 @@ export default function UserSignup() {
   const navigate = useNavigate();
 
   const { loading } = useSelector((state) => state.userAuth);
+
+  useEffect(() => {
+    dispatch(clearError());
+    dispatch(registerSuccess()); // Ensures loading is false on mount
+  }, [dispatch]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,19 +47,9 @@ export default function UserSignup() {
         { name, email, password }
       );
 
-      dispatch(
-        loginSuccess({
-          token: res.data.token,
-          user: {
-            _id: res.data._id,
-            name: res.data.name,
-            email: res.data.email,
-          },
-        })
-      );
-
-      toast.success("Account created successfully!");
-      navigate("/");
+      dispatch(registerSuccess());
+      toast.success(res.data.message);
+      navigate("/verify-email", { state: { email } });
     } catch (err) {
       const message =
         err.response?.data?.message || "Signup failed";

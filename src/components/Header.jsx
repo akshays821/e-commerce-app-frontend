@@ -2,7 +2,10 @@ import { Sparkles, LogIn, LogOut, User, ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { logout } from "../redux/slices/userAuthSlice";
-import toast from "react-hot-toast";
+import newLogo from "../assets/logo2.png";
+
+
+
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -27,27 +30,21 @@ export default function Header() {
 
           {/* Logo Section */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 group cursor-pointer">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center transition-transform group-hover:rotate-12 group-hover:scale-110">
-                <Sparkles className="w-5 h-5 text-primary" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-foreground tracking-tight leading-none group-hover:text-primary transition-colors">
-                  ShopAI
-                </span>
-                <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
-                  Store
-                </span>
-              </div>
-            </div>
+            <Link to="/" className="block">
+              <img
+                src={newLogo}
+                alt="ShopAI"
+                className="h-20 object-contain hover:opacity-90 transition-opacity"
+              />
+            </Link>
 
             <div className="hidden md:block h-8 w-px bg-gradient-to-b from-transparent via-border to-transparent mx-2"></div>
 
-            <nav className="hidden md:flex gap-6">
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Discover</a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Deals</a>
-              <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">New</a>
-            </nav>
+            <div className="hidden md:flex gap-6 items-center">
+              <span className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-default">
+                Smart Shopping, Powered By AI
+              </span>
+            </div>
           </div>
 
           {/* Cart & Auth Section */}

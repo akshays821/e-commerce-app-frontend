@@ -1,5 +1,6 @@
 import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight, Tag } from "lucide-react";
-import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import logo from "../../assets/logo2.png";
 
 export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
     const menuItems = [
@@ -12,14 +13,9 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
     return (
         <div className="w-64 h-screen bg-white border-r border-gray-100 flex flex-col fixed left-0 top-0 z-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
             {/* Logo Area */}
-            <div className="p-8 pb-12">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                    ShopAI
-                </h1>
-                <p className="text-xs text-muted-foreground font-medium tracking-wide mt-1">
-                    ADMIN WORKSPACE
-                </p>
-            </div>
+            <Link to="/" className="flex items-center justify-center p-4 border-b border-gray-100">
+                <img src={logo} alt="ShopAI" className="h-20 w-auto object-contain" />
+            </Link>
 
             {/* Main Menu */}
             <nav className="flex-1 px-4 space-y-2">
@@ -27,10 +23,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
                     <button
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${activeTab === item.id
-                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                            : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"
-                            }`}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${activeTab === item.id ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"}`}
                     >
                         <item.icon size={20} className={activeTab === item.id ? "animate-pulse" : ""} />
                         <span className="font-medium">{item.label}</span>
@@ -45,10 +38,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
             <div className="p-4 border-t border-gray-100 space-y-2">
                 <button
                     onClick={() => setActiveTab("settings")}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === "settings"
-                        ? "bg-gray-100 text-foreground"
-                        : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"
-                        }`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === "settings" ? "bg-gray-100 text-foreground" : "text-muted-foreground hover:bg-gray-50 hover:text-foreground"}`}
                 >
                     <Settings size={20} />
                     <span className="font-medium">Settings</span>

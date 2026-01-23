@@ -98,9 +98,13 @@ export default function Home() {
 
     if (activeCategory) {
       const active = activeCategory.toLowerCase().trim();
-      filtered = filtered.filter(p =>
-        p.category && p.category.toLowerCase().trim() === active
-      );
+      filtered = filtered.filter(p => {
+        if (!p.category) return false;
+        if (Array.isArray(p.category)) {
+          return p.category.some(c => c.toLowerCase().trim() === active);
+        }
+        return typeof p.category === 'string' && p.category.toLowerCase().trim() === active;
+      });
     }
 
     if (search) {
