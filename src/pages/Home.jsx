@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { fetchProducts } from "../redux/slices/productsSlice";
 import { logout } from "../redux/slices/userAuthSlice";
@@ -21,6 +21,10 @@ import Footer from "../components/Footer";
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // Need this to read query params
+
+  const searchParams = new URLSearchParams(location.search);
+  const urlSearch = searchParams.get('search');
 
   const { products, loading, error } = useSelector(
     (state) => state.products
@@ -34,13 +38,39 @@ export default function Home() {
   const [aiResults, setAiResults] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
-
   const [categories, setCategories] = useState([]);
 
+  // FETCH PRODUCTS
   useEffect(() => {
     dispatch(fetchProducts());
+  }, [dispatch]);
 
-    // Fetch categories to show all (even empty ones)
+
+  // AI SEARCH HELPER (Direct for URL params)
+  const handleAISearchDirect = async (query) => {
+    if (!query?.trim()) return;
+    try {
+      setAiLoading(true);
+      setActiveCategory(null);
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/search-ai`, { message: query });
+      setAiResults(res.data.products);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // SYNC URL SEARCH
+  useEffect(() => {
+    if (urlSearch) {
+      setSearch(urlSearch);
+      handleAISearchDirect(urlSearch);
+    }
+  }, [urlSearch]);
+
+  // FETCH CATEGORIES
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
@@ -50,7 +80,7 @@ export default function Home() {
       }
     };
     fetchCategories();
-  }, [dispatch]);
+  }, []);
 
   // Compute top 6 categories based on product count
   // Use the fetched categories (limit to 6)
@@ -121,19 +151,9 @@ export default function Home() {
 
       <main>
         {/* Hero Section with Search integrated visually */}
-        <div className="relative pb-12 pt-32">
+        <div className="relative pb-8 pt-32">
           <HeroSection />
-
-          <div className="max-w-2xl mx-auto px-4 -mt-8 relative z-20">
-            <SearchBar
-              value={search}
-              onChange={setSearch}
-              onSearch={handleAISearch}
-              onReset={handleResetSearch}
-              showReset={aiResults !== null || search.length > 0}
-              loading={aiLoading}
-            />
-          </div>
+          {/* SearchBar removed from here as it is now in Header */}
         </div>
 
         {/* Categories & Products Section - White Card Effect */}

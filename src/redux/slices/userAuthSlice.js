@@ -60,6 +60,11 @@ const userAuthSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+
+    updateUser(state, action) {
+      state.user = { ...state.user, ...action.payload };
+      localStorage.setItem("userInfo", JSON.stringify(state.user));
+    },
   },
 });
 
@@ -70,6 +75,7 @@ export const {
   logout,
   clearError,
   registerSuccess,
+  updateUser,
 } = userAuthSlice.actions;
 
 export default userAuthSlice.reducer;

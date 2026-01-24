@@ -13,6 +13,11 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UserLogin from "./pages/UserLogin";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import PlaceOrder from "./pages/PlaceOrder";
+import OrderSuccess from "./pages/OrderSuccess";
+import MyOrders from "./pages/MyOrders";
+import OrderDetails from "./pages/OrderDetails";
+import UserProfile from "./pages/UserProfile";
 
 import { useAuthCheck } from "./hooks/useAuthCheck";
 import BannedAccountModal from "./components/BannedAccountModal";
@@ -37,10 +42,17 @@ function AppContent() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/profile" element={<UserProfile />} />
 
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        {/* Order Routes */}
+        <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/payment/success/:transactionId" element={<OrderSuccess />} />
+        <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/order/:id" element={<OrderDetails />} />
       </Routes>
 
       {!hideChatbot && <Chatbot />}

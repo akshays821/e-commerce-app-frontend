@@ -5,6 +5,7 @@ import DashboardStats from "../../components/admin/DashboardStats";
 import ProductManager from "../../components/admin/ProductManager";
 import UserManagement from "../../components/admin/UserManagement";
 import CategoryManager from "../../components/admin/CategoryManager";
+import OrderManager from "../../components/admin/OrderManager";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -14,12 +15,21 @@ export default function AdminDashboard() {
 
   // Check auth & block back button
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      navigate("/admin/login", { replace: true });
-    }
+    const checkAuth = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
 
-    // Prevent back button
+      // Optional: Verify token by making a lightweight request
+      // If this fails with 401, the interceptor in utils/api.js (if used) or this catch block will handle it
+      // For now, relying on the presence + API failures to kick out is a start, but let's be safer:
+      // We'll rely on the sub-components to fail fast or add a verify endpoint later.
+    };
+    checkAuth();
+
+    // Prevent back button logic remains...
     const handlePopState = (event) => {
       window.history.pushState(null, "", window.location.href);
     };
@@ -47,6 +57,8 @@ export default function AdminDashboard() {
         return <CategoryManager />;
       case "users":
         return <UserManagement />;
+      case "orders":
+        return <OrderManager />;
       case "settings":
         return (
           <div className="p-8 text-center text-muted-foreground">

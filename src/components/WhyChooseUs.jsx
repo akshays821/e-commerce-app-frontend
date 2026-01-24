@@ -27,25 +27,19 @@ const features = [
 
 export default function WhyChooseUs() {
     return (
-        <section className="relative py-10 overflow-hidden border-t border-white/5">
-
-            {/* Premium Background Image with Overlay */}
-            <div className="absolute inset-0 z-0">
-                <img
-                    src={bgImage}
-                    alt="Background"
-                    className="w-full h-full object-cover opacity-50" // Reduced opacity slightly
-                />
-                <div className="absolute inset-0 bg-[#0a0a0a]/90" /> {/* Simpler overlay */}
-            </div>
+        <section className="relative py-16 overflow-hidden bg-slate-50 border-t border-slate-200">
+            {/* Soft Ambient Background */}
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-40 mix-blend-soft-light pointer-events-none" />
+            <div className="absolute top-[-50%] right-[-10%] w-[600px] h-[600px] bg-violet-200/30 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-[-50%] left-[-10%] w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
 
-                {/* Header - Compact & Centered */}
-                <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold tracking-tight mb-2 text-white">
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-black tracking-tight mb-2 text-slate-900">
                         Why Choose ShopAI
                     </h2>
+                    <div className="h-1.5 w-20 bg-violet-500 rounded-full mx-auto" />
                 </div>
 
                 {/* 4-Column Grid - Compact Glassmorphism */}
@@ -57,15 +51,17 @@ export default function WhyChooseUs() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: idx * 0.05, duration: 0.4 }}
-                            className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-all group flex flex-col items-center text-center"
+                            className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-violet-900/5 transition-all group flex flex-col items-center text-center relative overflow-hidden"
                         >
-                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-indigo-300 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 border border-white/5">
-                                <feature.icon size={18} />
+                            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+
+                            <div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-violet-600 group-hover:text-white transition-all duration-300">
+                                <feature.icon size={20} />
                             </div>
-                            <h3 className="text-sm font-bold mb-1 text-white tracking-tight">
+                            <h3 className="text-base font-bold mb-2 text-slate-900 tracking-tight">
                                 {feature.title}
                             </h3>
-                            <p className="text-xs text-neutral-400 leading-snug font-light">
+                            <p className="text-sm text-slate-500 leading-relaxed font-medium">
                                 {feature.desc}
                             </p>
                         </motion.div>

@@ -1,4 +1,4 @@
-import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight, Tag } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight, Tag, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo2.png";
 
@@ -6,6 +6,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
         { id: "products", label: "Products", icon: ShoppingBag },
+        { id: "orders", label: "Orders", icon: Truck },
         { id: "categories", label: "Categories", icon: Tag },
         { id: "users", label: "Users", icon: Users },
     ];

@@ -1,7 +1,9 @@
-import { Sparkles, LogIn, LogOut, User, ShoppingCart } from "lucide-react";
+import { Sparkles, LogIn, LogOut, User, ShoppingCart, Package, ChevronDown, Search, X } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { logout } from "../redux/slices/userAuthSlice";
+import toast from "react-hot-toast";
 import newLogo from "../assets/logo2.png";
 
 
@@ -14,72 +16,138 @@ export default function Header() {
   const { isAuthenticated } = useSelector((state) => state.userAuth);
   const { totalQuantity } = useSelector((state) => state.cart);
 
-  const handleAuthAction = () => {
-    if (isAuthenticated) {
-      dispatch(logout());
-      toast.success("Logged out successfully");
-    } else {
-      navigate("/login");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Search State
+  const [search, setSearch] = useState("");
+  const inputRef = useRef(null);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      // Dispatch search event or navigate to search results
+      // Since existing search logic is page-based, we'll navigate to home with query
+      navigate(`/?search=${encodeURIComponent(search)}`);
     }
   };
 
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully");
+    setIsDropdownOpen(false);
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-white/95 to-blue-50/40 backdrop-blur-2xl border-b border-blue-100/60 shadow-sm shadow-blue-900/5 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-violet-50/50 backdrop-blur-xl border-b border-violet-200/40 shadow-sm shadow-violet-900/5 transition-all duration-300">
       <div className="w-full px-4 sm:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 gap-8">
 
           {/* Logo Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-shrink-0">
             <Link to="/" className="block">
               <img
                 src={newLogo}
                 alt="ShopAI"
-                className="h-20 object-contain hover:opacity-90 transition-opacity"
+                className="h-16 object-contain hover:opacity-90 transition-opacity"
               />
             </Link>
+          </div>
 
-            <div className="hidden md:block h-8 w-px bg-gradient-to-b from-transparent via-border to-transparent mx-2"></div>
-
-            <div className="hidden md:flex gap-6 items-center">
-              <span className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-default">
-                Smart Shopping, Powered By AI
-              </span>
-            </div>
+          {/* Central AI Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-2xl mx-auto flex-col items-center justify-center relative">
+            <form onSubmit={handleSearchSubmit} className="w-full relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none z-10">
+                <Sparkles className="w-5 h-5 text-violet-600 animate-pulse" />
+              </div>
+              <input
+                ref={inputRef}
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Ask AI for anything..."
+                className="w-full h-12 pl-12 pr-12 rounded-2xl bg-white/90 backdrop-blur-sm border-2 border-violet-200/80 shadow-lg shadow-violet-100/50 text-slate-800 placeholder:text-slate-400 font-medium focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 transition-all duration-300"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-3 flex items-center justify-center z-10"
+                onClick={() => search && setSearch("")}
+              >
+                {search ? <X className="w-5 h-5 text-slate-400 hover:text-slate-600" /> : null}
+              </button>
+            </form>
           </div>
 
           {/* Cart & Auth Section */}
-          <div className="flex items-center gap-12 pl-8 border-l border-blue-100/50">
+          <div className="flex items-center gap-8 pl-4 flex-shrink-0">
+
             {/* Cart Button */}
-            <Link to="/cart" className="relative group p-2 rounded-xl hover:bg-secondary/50 transition-colors">
-              <ShoppingCart className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            <Link to="/cart" className="relative group p-2 rounded-xl hover:bg-slate-50 transition-colors">
+              <ShoppingCart className="w-5 h-5 text-slate-500 group-hover:text-slate-900 transition-colors" />
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-lg shadow-blue-500/20 animate-in zoom-in">
+                <span className="absolute -top-1 -right-1 bg-slate-900 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-lg shadow-slate-900/20 animate-in zoom-in">
                   {totalQuantity}
                 </span>
               )}
             </Link>
 
-            {/* Auth Button */}
-            <div className="ml-2">
+            {/* Auth Dropdown */}
+            <div className="ml-2 relative" ref={dropdownRef}>
               {isAuthenticated ? (
-                <button
-                  onClick={handleAuthAction}
-                  className="group relative w-10 h-10 rounded-xl bg-secondary/50 border border-transparent hover:border-red-200 hover:bg-red-50 flex items-center justify-center transition-all overflow-hidden"
-                  title="Logout"
-                >
-                  <div className="absolute inset-0 flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-full">
-                    <User className="w-5 h-5 text-foreground" />
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 group-hover:translate-y-0">
-                    <LogOut className="w-4 h-4 text-red-500" />
-                  </div>
-                </button>
+                <>
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="group relative flex items-center gap-2 h-10 px-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-slate-200 transition-colors">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute top-12 right-0 w-48 bg-white border border-slate-100 rounded-xl shadow-xl shadow-slate-200/50 py-1 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200">
+                      <Link
+                        to="/profile"
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <User className="w-4 h-4" /> My Profile
+                      </Link>
+                      <Link
+                        to="/my-orders"
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <Package className="w-4 h-4" /> My Orders
+                      </Link>
+                      <div className="h-px bg-slate-100 my-1" />
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors text-left"
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <button
-                  onClick={handleAuthAction}
-                  className="group flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all
-                  bg-primary text-primary-foreground shadow-lg shadow-blue-500/25 
-                  hover:shadow-blue-500/40 hover:-translate-y-0.5"
+                  onClick={() => navigate("/login")}
+                  className="group flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all
+                  bg-slate-900 text-white shadow-lg shadow-slate-900/20 
+                  hover:bg-slate-800 hover:shadow-slate-900/30 hover:-translate-y-0.5"
                 >
                   <span>Login</span>
                   <LogIn size={16} className="transition-transform group-hover:translate-x-1" />

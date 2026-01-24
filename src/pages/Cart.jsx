@@ -268,7 +268,7 @@ const Cart = () => {
                                         </div>
 
                                         <button
-                                            onClick={() => toast.success("Checkout initialized!")}
+                                            onClick={() => navigate('/place-order')}
                                             className="w-full group relative overflow-hidden bg-slate-900 text-white py-4 px-6 rounded-2xl font-bold text-lg shadow-xl shadow-slate-900/20 transition-all hover:scale-[1.02] hover:shadow-2xl"
                                         >
                                             <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />

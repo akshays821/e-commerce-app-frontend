@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "../redux/slices/cartSlice";
 import toast from "react-hot-toast";
-import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, Star, Plus } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, Star, Plus, Zap } from "lucide-react";
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -44,6 +44,34 @@ export default function ProductDetails() {
             category: product.category ? product.category[0] : 'General',
             quantity: 1
         }));
+    };
+
+    const handleBuyNow = async () => {
+        if (!isAuthenticated) {
+            toast.error("Please login to buy");
+            navigate("/login");
+            return;
+        }
+
+        const isFashionItem = product.category?.some(cat => /fashion|clothing|shoes|jacket|shirt|pant|wear|sneaker|boot|hoodie|heels|jeans/i.test(cat));
+
+        if (isFashionItem && !activeSize) {
+            toast.error("Please select a size first!");
+            return;
+        }
+
+        // Direct Buy - Pass item to checkout without adding to Redux cart
+        const directItem = {
+            _id: product._id,
+            name: product.title,
+            price: product.price,
+            image: getImageUrl(product.image),
+            selectedSize: activeSize,
+            category: product.category ? product.category[0] : 'General',
+            quantity: 1
+        };
+
+        navigate('/place-order', { state: { buyNowItem: directItem } });
     };
 
     // Fallback sizes if not in product data (Mocking for UI completeness)
@@ -275,6 +303,16 @@ export default function ProductDetails() {
                                 >
                                     <ShoppingBag size={22} />
                                     <span>Add to Cart</span>
+                                </motion.button>
+
+                                <motion.button
+                                    onClick={handleBuyNow}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="flex-[2] bg-slate-900 hover:bg-slate-800 text-white h-16 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-slate-200 transition-colors"
+                                >
+                                    <Zap size={22} className="text-yellow-400 fill-yellow-400" />
+                                    <span>Buy Now</span>
                                 </motion.button>
 
                                 <motion.button

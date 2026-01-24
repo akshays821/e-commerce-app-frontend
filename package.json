@@ -15,6 +15,8 @@
     "axios": "^1.13.2",
     "cloudinary": "^1.41.3",
     "framer-motion": "^12.23.26",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.561.0",
     "multer-storage-cloudinary": "^4.0.0",
