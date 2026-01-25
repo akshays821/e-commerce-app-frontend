@@ -1,23 +1,41 @@
 import { Sparkles, LogIn, LogOut, User, ShoppingCart, Package, ChevronDown, Search, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { logout } from "../redux/slices/userAuthSlice";
 import toast from "react-hot-toast";
 import newLogo from "../assets/logo2.png";
-
+import { motion, AnimatePresence } from "framer-motion";
 
 
 
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { isAuthenticated } = useSelector((state) => state.userAuth);
   const { totalQuantity } = useSelector((state) => state.cart);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  // Login Tooltip State
+  const [showLoginTooltip, setShowLoginTooltip] = useState(false);
+
+  useEffect(() => {
+    // Show tooltip if: Not authenticated, on Home page, and hasn't been dismissed yet
+    if (!isAuthenticated && location.pathname === "/" && !sessionStorage.getItem("loginTooltipDismissed")) {
+      setShowLoginTooltip(true);
+    } else {
+      setShowLoginTooltip(false);
+    }
+  }, [isAuthenticated, location.pathname]);
+
+  const dismissTooltip = () => {
+    setShowLoginTooltip(false);
+    sessionStorage.setItem("loginTooltipDismissed", "true");
+  };
 
   // Search State
   const [search, setSearch] = useState("");
@@ -143,15 +161,52 @@ export default function Header() {
                   )}
                 </>
               ) : (
-                <button
-                  onClick={() => navigate("/login")}
-                  className="group flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all
-                  bg-slate-900 text-white shadow-lg shadow-slate-900/20 
-                  hover:bg-slate-800 hover:shadow-slate-900/30 hover:-translate-y-0.5"
-                >
-                  <span>Login</span>
-                  <LogIn size={16} className="transition-transform group-hover:translate-x-1" />
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="group flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm transition-all
+                    bg-slate-900 text-white shadow-lg shadow-slate-900/20 
+                    hover:bg-slate-800 hover:shadow-slate-900/30 hover:-translate-y-0.5"
+                  >
+                    <span>Login</span>
+                    <LogIn size={16} className="transition-transform group-hover:translate-x-1" />
+                  </button>
+
+                  {/* Creative Login Tooltip/Recommendation */}
+                  <AnimatePresence>
+                    {showLoginTooltip && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        className="absolute right-0 top-14 w-60 p-4 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl shadow-violet-900/30 flex flex-col items-start gap-2 z-50"
+                      >
+                        {/* Arrow pointing up */}
+                        <div className="absolute -top-2 right-6 w-4 h-4 bg-slate-900 rotate-45 border-t border-l border-slate-800" />
+
+                        <div className="flex justify-between w-full items-start">
+                          <h4 className="text-sm font-bold text-white">Unlock Full Access ✨</h4>
+                          <button onClick={dismissTooltip} className="text-slate-400 hover:text-white transition-colors">
+                            <X size={14} />
+                          </button>
+                        </div>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                          Sign in to save your cart, track orders, and get personalized AI recommendations!
+                        </p>
+                        <button
+                          onClick={() => {
+                            dismissTooltip();
+                            navigate("/login");
+                          }}
+                          className="text-xs font-bold text-violet-300 hover:text-white hover:underline mt-1 transition-colors"
+                        >
+                          Login Now &rarr;
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               )}
             </div>
           </div>
