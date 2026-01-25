@@ -120,14 +120,14 @@ export default function Header() {
                     <div className="absolute top-12 right-0 w-48 bg-white border border-slate-100 rounded-xl shadow-xl shadow-slate-200/50 py-1 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200">
                       <Link
                         to="/profile"
-                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-violet-600 transition-colors"
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         <User className="w-4 h-4" /> My Profile
                       </Link>
                       <Link
                         to="/my-orders"
-                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-violet-600 transition-colors"
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         <Package className="w-4 h-4" /> My Orders

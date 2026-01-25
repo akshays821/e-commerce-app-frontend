@@ -69,9 +69,9 @@ const OrderSuccess = () => {
         <div className="min-h-screen flex items-center justify-center bg-white font-sans relative overflow-hidden">
 
             {/* Colorful Background confetti */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50 via-white to-white pointer-events-none" />
-            <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-200/40 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-200/40 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-50 via-white to-white pointer-events-none" />
+            <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-200/40 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-200/40 rounded-full blur-[100px] pointer-events-none" />
 
             <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
@@ -79,13 +79,13 @@ const OrderSuccess = () => {
                 transition={{ type: "spring", duration: 0.8 }}
                 className="max-w-lg w-full relative z-10 mx-4"
             >
-                <div className="bg-white/80 backdrop-blur-2xl border border-white p-12 rounded-[3rem] shadow-2xl shadow-blue-900/10 text-center relative group">
+                <div className="bg-white/80 backdrop-blur-2xl border border-white p-12 rounded-[3rem] shadow-2xl shadow-violet-900/10 text-center relative group">
 
                     {status === "loading" && (
                         <div className="flex flex-col items-center py-10">
                             <div className="relative w-20 h-20 mb-8">
                                 <div className="absolute inset-0 border-4 border-slate-100 rounded-full" />
-                                <div className="absolute inset-0 border-4 border-t-blue-600 rounded-full animate-spin" />
+                                <div className="absolute inset-0 border-4 border-t-violet-600 rounded-full animate-spin" />
                             </div>
                             <h2 className="text-3xl font-bold text-slate-900 mb-2">Verifying Payment</h2>
                             <p className="text-slate-500 font-medium">Securely connecting to bank...</p>

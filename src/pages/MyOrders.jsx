@@ -89,8 +89,8 @@ const MyOrders = () => {
 
             {/* Background Decorations */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-100/40 rounded-full blur-[100px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-100/40 rounded-full blur-[100px]" />
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-violet-100/40 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-100/40 rounded-full blur-[100px]" />
             </div>
 
             <div className="relative z-10 max-w-5xl mx-auto">
@@ -145,8 +145,8 @@ const MyOrders = () => {
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 className="text-center py-20 bg-white border border-slate-200 rounded-3xl shadow-sm"
                             >
-                                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <Package className="w-8 h-8 text-blue-500" />
+                                <div className="w-20 h-20 bg-violet-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <Package className="w-8 h-8 text-violet-500" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-slate-900 mb-2">No orders found</h3>
                                 <p className="text-slate-500 mb-6">{getEmptyStateMessage()}</p>
@@ -194,9 +194,9 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="group bg-[#FFFCF6]/90 backdrop-blur-md border border-stone-200/60 rounded-2xl p-5 hover:shadow-xl hover:shadow-orange-900/5 transition-all duration-300 relative overflow-hidden"
+            className="group bg-[#FFFCF6]/90 backdrop-blur-md border border-stone-200/60 rounded-2xl p-5 hover:shadow-xl hover:shadow-violet-900/5 transition-all duration-300 relative overflow-hidden"
         >
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-50/40 to-orange-50/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-50/40 to-indigo-50/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <div className="relative z-10">
                 {/* Top Row: ID, Date, Status */}
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-6">
@@ -264,7 +264,7 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
                             transition={{ duration: 1, delay: 0.5 }}
-                            className="absolute top-1/2 left-0 h-1.5 bg-blue-600 rounded-full -translate-y-1/2 z-10"
+                            className="absolute top-1/2 left-0 h-1.5 bg-violet-600 rounded-full -translate-y-1/2 z-10"
                         />
 
                         <div className="relative z-20 flex justify-between w-full">
@@ -278,8 +278,8 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                                             initial={{ scale: 0.8, opacity: 0 }}
                                             animate={{ scale: 1, opacity: 1 }}
                                             transition={{ delay: 0.2 + (i * 0.1) }}
-                                            className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-500 bg-white ${isActive ? "border-blue-600 text-blue-600" : "border-slate-200 text-slate-300"
-                                                } ${isCurrent ? "ring-4 ring-blue-100" : ""}`}
+                                            className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-500 bg-white ${isActive ? "border-violet-600 text-violet-600" : "border-slate-200 text-slate-300"
+                                                } ${isCurrent ? "ring-4 ring-violet-100" : ""}`}
                                         >
                                             {getStepIcon(step)}
                                         </motion.div>

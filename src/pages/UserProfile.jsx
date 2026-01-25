@@ -103,8 +103,8 @@ const UserProfile = () => {
         <div className="min-h-screen bg-slate-50 py-20 px-4 relative font-sans text-slate-900">
 
             {/* Decorations */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100/50 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-violet-100/50 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-100/50 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="max-w-6xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
@@ -117,7 +117,7 @@ const UserProfile = () => {
                     <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl shadow-slate-200/50 border border-white/60 text-center relative overflow-hidden group">
 
                         {/* Animated gradient mesh background for card */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/50 to-pink-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-purple-50/50 to-pink-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
                         <div className="relative z-10">
                             <div className="w-32 h-32 mx-auto bg-slate-900 rounded-full p-1 shadow-2xl shadow-slate-900/30 mb-6">
@@ -132,7 +132,7 @@ const UserProfile = () => {
                             <div className="flex justify-center gap-2 mb-8">
                                 <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${user?.role === 'admin'
                                     ? 'bg-purple-100 text-purple-700 border-purple-200'
-                                    : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
+                                    : 'bg-violet-50 text-violet-600 border-violet-100'}`}>
                                     {user?.role || 'Valued Member'}
                                 </span>
                             </div>
@@ -155,7 +155,7 @@ const UserProfile = () => {
                     {/* Quick Stats / Membership */}
                     <div className="mt-6 bg-slate-900 rounded-3xl p-6 text-white text-center shadow-2xl shadow-slate-900/20 relative overflow-hidden group">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-white/10 transition-colors" />
-                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-500/10 rounded-full blur-3xl -ml-6 -mb-6" />
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-500/10 rounded-full blur-3xl -ml-6 -mb-6" />
 
                         <p className="font-bold text-slate-400 text-[10px] uppercase tracking-widest mb-2">Membership Tier</p>
                         <h3 className="text-2xl font-black mb-1 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">PLATINUM</h3>
@@ -176,7 +176,7 @@ const UserProfile = () => {
                             <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-2">Account Settings</h1>
                             <p className="text-slate-500 font-medium">Manage your personal details and shipping preferences.</p>
                         </div>
-                        <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 border border-blue-100 shadow-sm">
+                        <div className="w-14 h-14 bg-violet-50 rounded-2xl flex items-center justify-center text-violet-600 border border-violet-100 shadow-sm">
                             <Shield className="w-7 h-7" />
                         </div>
                     </div>
@@ -185,9 +185,9 @@ const UserProfile = () => {
 
                         {/* Personal Info */}
                         <div className="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-lg shadow-slate-200/30 border border-slate-100 md:col-span-2 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500" />
+                            <div className="absolute top-0 left-0 w-1.5 h-full bg-violet-500" />
                             <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-3">
-                                <span className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"><User className="w-4 h-4" /></span>
+                                <span className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center text-violet-600"><User className="w-4 h-4" /></span>
                                 Personal Information
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -198,7 +198,7 @@ const UserProfile = () => {
                                         name="name"
                                         value={profileData.name}
                                         onChange={handleChange}
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-sm font-bold text-slate-700 focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all shadow-sm"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-sm font-bold text-slate-700 focus:bg-white focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 outline-none transition-all shadow-sm"
                                     />
                                 </div>
                                 <div className="space-y-2">

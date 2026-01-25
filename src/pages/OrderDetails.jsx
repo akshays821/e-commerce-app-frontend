@@ -174,7 +174,7 @@ const OrderDetails = () => {
         <div className="min-h-screen bg-slate-50 text-slate-900 py-20 px-4 md:px-12 font-sans relative">
 
             {/* Background */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-violet-100/40 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="max-w-6xl mx-auto relative z-10">
                 {/* Header */}
@@ -188,7 +188,7 @@ const OrderDetails = () => {
                             <Link to="/my-orders" className="text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-2 text-sm font-bold group">
                                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Orders
                             </Link>
-                            <Link to="/" className="text-slate-500 hover:text-blue-600 transition-colors flex items-center gap-2 text-sm font-bold group border-l border-slate-300 pl-4">
+                            <Link to="/" className="text-slate-500 hover:text-violet-600 transition-colors flex items-center gap-2 text-sm font-bold group border-l border-slate-300 pl-4">
                                 <ShoppingBag className="w-4 h-4" /> Continue Shopping
                             </Link>
                         </div>
@@ -197,7 +197,7 @@ const OrderDetails = () => {
                             Order #{order._id.slice(-6).toUpperCase()}
                             <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${order.orderStatus === 'cancelled' ? 'bg-red-100 text-red-700 border-red-200' :
                                 order.orderStatus === 'delivered' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
-                                    'bg-blue-100 text-blue-700 border-blue-200'
+                                    'bg-violet-100 text-violet-700 border-violet-200'
                                 }`}>
                                 {order.orderStatus}
                             </span>
@@ -228,7 +228,7 @@ const OrderDetails = () => {
                         {order.orderStatus === 'pending' && (
                             <button
                                 onClick={handleRepay}
-                                className="px-6 py-2.5 rounded-xl bg-slate-900 text-white shadow-lg shadow-slate-900/20 hover:bg-blue-600 hover:shadow-blue-600/30 transition-all font-bold flex items-center gap-2"
+                                className="px-6 py-2.5 rounded-xl bg-slate-900 text-white shadow-lg shadow-slate-900/20 hover:bg-violet-600 hover:shadow-violet-600/30 transition-all font-bold flex items-center gap-2"
                             >
                                 <RefreshCw className="w-4 h-4" /> Pay Now
                             </button>
@@ -256,7 +256,7 @@ const OrderDetails = () => {
                     >
                         <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/50">
                             <h2 className="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800">
-                                <span className="w-1.5 h-6 bg-blue-500 rounded-full" /> Items Ordered
+                                <span className="w-1.5 h-6 bg-violet-500 rounded-full" /> Items Ordered
                             </h2>
                             <div className="space-y-6">
                                 {order.orderItems.map((item) => (
@@ -265,7 +265,7 @@ const OrderDetails = () => {
                                             <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         </div>
                                         <div className="flex-1">
-                                            <h3 className="font-bold text-lg text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">{item.name}</h3>
+                                            <h3 className="font-bold text-lg text-slate-900 mb-1 group-hover:text-violet-600 transition-colors">{item.name}</h3>
                                             <p className="text-slate-500 text-sm font-medium">Size: {item.size || 'N/A'}</p>
                                             <div className="flex items-center gap-4 mt-2">
                                                 <span className="text-slate-600 bg-slate-100 px-3 py-1 rounded-lg text-xs font-bold uppercase">Qty: {item.qty}</span>
@@ -320,13 +320,13 @@ const OrderDetails = () => {
                         </div>
 
                         {/* Total */}
-                        <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-3xl p-8 shadow-2xl relative overflow-hidden text-white">
+                        <div className="bg-gradient-to-br from-violet-600 to-indigo-600 rounded-3xl p-8 shadow-2xl relative overflow-hidden text-white">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10" />
 
-                            <p className="text-blue-100 text-sm font-medium mb-1">Total Verified Amount</p>
+                            <p className="text-violet-100 text-sm font-medium mb-1">Total Verified Amount</p>
                             <h2 className="text-4xl font-black text-white tracking-tight">${order.totalAmount}</h2>
 
-                            <div className="mt-6 pt-6 border-t border-white/20 flex justify-between items-center text-sm text-blue-100 font-medium">
+                            <div className="mt-6 pt-6 border-t border-white/20 flex justify-between items-center text-sm text-violet-100 font-medium">
                                 <span>Included Taxes</span>
                                 <span>${(order.totalAmount * 0.05).toFixed(2)}</span>
                             </div>

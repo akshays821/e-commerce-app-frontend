@@ -98,8 +98,8 @@ export default function CategorySection({ categories, activeCategory, onSelect }
 
           // Colorful backgrounds for inactive state
           const colors = [
-            "bg-blue-100 hover:bg-blue-200",
-            "bg-purple-100 hover:bg-purple-200",
+            "bg-violet-100 hover:bg-violet-200",
+            "bg-indigo-100 hover:bg-indigo-200",
             "bg-emerald-100 hover:bg-emerald-200",
             "bg-rose-100 hover:bg-rose-200",
             "bg-amber-100 hover:bg-amber-200",
