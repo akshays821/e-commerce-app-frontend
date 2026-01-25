@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal } from "../redux/slices/uiSlice";
-import { addToCart, clearCart } from "../redux/slices/cartSlice"; // Import cart actions
+import { addItemToCart, clearCart } from "../redux/slices/cartSlice"; // Import cart actions
 import { motion } from "framer-motion";
 import { ArrowLeft, MapPin, Truck, CreditCard, Home, XCircle, ShoppingBag, Trash2, Download, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
@@ -119,12 +119,10 @@ const OrderDetails = () => {
                 dispatch(clearCart());
                 order.orderItems.forEach(item => {
                     // Adapt item structure if needed, assuming match
-                    dispatch(addToCart({
+                    dispatch(addItemToCart({
                         ...item,
-                        // orderItem usually has product ID as 'product' or '_id'? 
-                        // Typically orderItems have `product` as the ID ref.
-                        // Cart slice expects `_id` usually.
                         _id: item.product,
+                        selectedSize: item.size,
                         quantity: item.qty
                     }));
                 });
