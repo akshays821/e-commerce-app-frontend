@@ -88,18 +88,37 @@ export default function UserSignup() {
   };
 
   return (
-    <div className="min-h-screen flex overflow-hidden font-sans">
+    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden font-sans">
 
       {/* Left Column - Form Section - Golden Theme */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-8 py-12 relative bg-[#FFFCF2]">
+      <div className="w-full md:w-1/2 flex flex-col md:justify-center items-center relative bg-[#FFFCF2]">
 
-        {/* Rich Golden Background Glows */}
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-amber-200/30 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-orange-200/30 rounded-full blur-[120px] pointer-events-none" />
+        {/* Mobile Brand Banner - Visible only on mobile */}
+        <div className="w-full h-[35vh] bg-slate-900 relative overflow-hidden md:hidden flex flex-col items-center justify-center text-center rounded-b-[2.5rem] shadow-2xl z-0 shrink-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-900 via-slate-900 to-indigo-950" />
+          <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-violet-600/20 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-indigo-500/10 rounded-full blur-[100px]" />
 
-        <div className="relative z-10 w-full max-w-md">
+          <img
+            src={logo}
+            alt="ShopAI"
+            className="w-20 h-20 object-contain relative z-10 drop-shadow-2xl mb-3 opacity-90"
+          />
+          <h2 className="text-2xl font-black text-white relative z-10 tracking-tight">
+            Join ShopAI
+          </h2>
+          <p className="text-violet-200 text-xs relative z-10 font-medium tracking-wide opacity-80">
+            Start your premium journey
+          </p>
+        </div>
 
-          <div className="mb-12 text-center">
+        {/* Rich Golden Background Glows (Desktop Only) */}
+        <div className="hidden md:block absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-amber-200/30 rounded-full blur-[120px] pointer-events-none" />
+        <div className="hidden md:block absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-orange-200/30 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="relative z-10 w-full max-w-md px-6 md:px-8 -mt-16 md:mt-0 pb-8 md:pb-0">
+
+          <div className="hidden md:block mb-12 text-center">
             <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">
               Create Account
             </h1>
@@ -108,9 +127,9 @@ export default function UserSignup() {
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl p-8 shadow-2xl shadow-amber-900/10 border border-amber-200">
+          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-2xl shadow-indigo-900/10 md:shadow-amber-900/10 border border-slate-100 md:border-amber-200">
 
-            <form onSubmit={handleSignup} className="space-y-5">
+            <form onSubmit={handleSignup} className="space-y-4 md:space-y-5">
 
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
@@ -119,7 +138,7 @@ export default function UserSignup() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-5 py-3.5 rounded-xl bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 outline-none transition-all border border-slate-200 font-medium"
-                  placeholder="John Doe"
+                  
                 />
               </div>
 
@@ -159,7 +178,7 @@ export default function UserSignup() {
                 disabled={loading}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-violet-900/20 hover:-translate-y-0.5 transition-all disabled:opacity-70 flex justify-center items-center gap-2 mt-4"
+                className="w-full bg-slate-900 text-white py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:shadow-xl hover:shadow-violet-900/20 hover:-translate-y-0.5 transition-all disabled:opacity-70 flex justify-center items-center gap-2 mt-4"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -169,11 +188,11 @@ export default function UserSignup() {
               </button>
 
 
-              <div className="relative my-8">
+              <div className="relative my-6 md:my-8">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t border-slate-100" />
                 </div>
-                <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
+                <div className="relative flex justify-center text-[10px] md:text-xs uppercase tracking-widest font-bold">
                   <span className="bg-white px-4 text-slate-400">
                     Or continue with
                   </span>
@@ -188,13 +207,12 @@ export default function UserSignup() {
                     useOneTap
                     theme="outline"
                     shape="pill"
-                    width="100%"
                   />
                 </div>
               </div>
             </form>
 
-            <div className="text-center mt-8 text-slate-500 font-medium">
+            <div className="text-center mt-6 md:mt-8 text-slate-500 font-medium text-sm">
               Already have an account?{" "}
               <span onClick={() => navigate("/login")} className="text-violet-600 hover:text-violet-700 hover:underline cursor-pointer font-bold">
                 Sign In
@@ -204,7 +222,7 @@ export default function UserSignup() {
         </div>
 
         {/* Footer / Copyright */}
-        <div className="absolute bottom-6 text-xs text-slate-400 font-medium">
+        <div className="absolute bottom-4 md:bottom-6 text-[10px] md:text-xs text-slate-400 font-medium">
           © 2024 Shop AI. All Rights Reserved.
         </div>
       </div>

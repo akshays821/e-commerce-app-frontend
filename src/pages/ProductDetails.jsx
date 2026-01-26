@@ -111,6 +111,10 @@ export default function ProductDetails() {
 
     if (!product) return null;
 
+    // Reliable stock calculation
+    const availableStock = product.countInStock ?? product.stock ?? product.quantity ?? 0;
+    const isOutOfStock = availableStock === 0;
+
     return (
         <div className="min-h-screen bg-[#fcfcfc] text-neutral-800 relative z-0 overflow-hidden">
 
@@ -211,19 +215,6 @@ export default function ProductDetails() {
                             </motion.button>
                         )}
 
-                        {/* Live Counter Badge */}
-                        <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="absolute -top-12 left-0 bg-red-50 text-red-500 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 border border-red-100"
-                        >
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                            </span>
-                            24 people are viewing this right now
-                        </motion.div>
-
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -242,12 +233,32 @@ export default function ProductDetails() {
                                 <span className="text-neutral-400 font-medium text-sm border-l border-neutral-200 pl-4">4.9 Star Rating</span>
                             </div>
 
-                            <div className="flex items-end gap-3 text-neutral-900">
-                                <div className="text-5xl font-bold tracking-tight">
-                                    ₹{product.price}
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-end gap-3 text-neutral-900">
+                                    <div className="text-5xl font-bold tracking-tight">
+                                        ₹{product.price}
+                                    </div>
+                                    <div className="text-lg text-neutral-400 line-through font-medium mb-1.5">
+                                        ₹{Math.round(product.price * 1.2)}
+                                    </div>
                                 </div>
-                                <div className="text-lg text-neutral-400 line-through font-medium mb-1.5">
-                                    ₹{Math.round(product.price * 1.2)}
+                                <div className="flex items-center gap-2">
+                                    {availableStock > 0 ? (
+                                        <span className={`text-sm font-bold px-3 py-1 rounded-full flex items-center gap-1.5 w-fit ${availableStock < 10
+                                            ? "bg-red-50 text-red-600 border border-red-100 animate-pulse"
+                                            : "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                                            }`}>
+                                            <Zap size={14} className={availableStock < 10 ? "fill-red-600" : "fill-emerald-600"} />
+                                            {availableStock < 10
+                                                ? `Hurry! Only ${availableStock} left in stock`
+                                                : `In Stock: ${availableStock} units`
+                                            }
+                                        </span>
+                                    ) : (
+                                        <span className="text-sm font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200 w-fit">
+                                            Out of Stock
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </motion.div>
@@ -294,24 +305,31 @@ export default function ProductDetails() {
                             )}
 
                             {/* Action Buttons */}
+                            {/* Mobile Note: Changed action buttons to wrap on smaller screens if needed, though flex currently handles it. */}
                             <div className="flex items-center gap-4 pt-4">
                                 <motion.button
                                     onClick={handleAddToCart}
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="flex-[2] bg-indigo-600 hover:bg-indigo-700 text-white h-16 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-indigo-200 transition-colors"
+                                    disabled={isOutOfStock}
+                                    whileHover={{ scale: isOutOfStock ? 1 : 1.02 }}
+                                    whileTap={{ scale: isOutOfStock ? 1 : 0.95 }}
+                                    className={`flex-[2] h-16 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl transition-all ${isOutOfStock
+                                        ? "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
+                                        : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200"}`}
                                 >
                                     <ShoppingBag size={22} />
-                                    <span>Add to Cart</span>
+                                    <span>{isOutOfStock ? "Out of Stock" : "Add to Cart"}</span>
                                 </motion.button>
 
                                 <motion.button
                                     onClick={handleBuyNow}
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="flex-[2] bg-slate-900 hover:bg-slate-800 text-white h-16 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl shadow-slate-200 transition-colors"
+                                    disabled={isOutOfStock}
+                                    whileHover={{ scale: isOutOfStock ? 1 : 1.02 }}
+                                    whileTap={{ scale: isOutOfStock ? 1 : 0.95 }}
+                                    className={`flex-[2] h-16 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl transition-all ${isOutOfStock
+                                        ? "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
+                                        : "bg-slate-900 hover:bg-slate-800 text-white shadow-slate-200"}`}
                                 >
-                                    <Zap size={22} className="text-yellow-400 fill-yellow-400" />
+                                    <Zap size={22} className={isOutOfStock ? "text-slate-400" : "text-yellow-400 fill-yellow-400"} />
                                     <span>Buy Now</span>
                                 </motion.button>
 
@@ -341,6 +359,6 @@ export default function ProductDetails() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

@@ -74,7 +74,7 @@ const Cart = () => {
 
             <Header />
 
-            <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+            <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-32 md:py-32">
                 {/* Page Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                     <div className="flex items-center gap-4">
@@ -151,9 +151,9 @@ const Cart = () => {
                                         layout
                                         className="group relative bg-white/70 backdrop-blur-md rounded-[2rem] p-4 sm:p-5 shadow-sm hover:shadow-xl hover:shadow-indigo-100/50 border border-white/60 transition-all duration-300"
                                     >
-                                        <div className="flex gap-6">
-                                            {/* Product Image */}
-                                            <div className="w-28 h-32 sm:w-36 sm:h-40 flex-shrink-0 rounded-2xl overflow-hidden bg-slate-100 relative shadow-inner">
+                                        <div className="flex gap-4 sm:gap-6">
+                                            {/* Product Image - larger on mobile relative to container */}
+                                            <div className="w-24 h-28 sm:w-36 sm:h-40 flex-shrink-0 rounded-2xl overflow-hidden bg-slate-100 relative shadow-inner">
                                                 <img
                                                     src={item.image}
                                                     alt={item.name}
@@ -165,14 +165,14 @@ const Cart = () => {
                                             {/* Details */}
                                             <div className="flex-1 flex flex-col justify-between py-1">
                                                 <div>
-                                                    <div className="flex justify-between items-start gap-4">
-                                                        <div>
-                                                            <h3 className="text-xl font-bold text-slate-800 leading-tight">
+                                                    <div className="flex justify-between items-start gap-2 sm:gap-4">
+                                                        <div className="flex-1">
+                                                            <h3 className="text-base sm:text-xl font-bold text-slate-800 leading-tight line-clamp-2">
                                                                 <Link to={`/product/${item._id}`} className="hover:text-indigo-600 transition-colors">
                                                                     {item.name}
                                                                 </Link>
                                                             </h3>
-                                                            <p className="text-sm font-medium text-slate-400 mt-1 uppercase tracking-wide">
+                                                            <p className="text-xs sm:text-sm font-medium text-slate-400 mt-1 uppercase tracking-wide">
                                                                 {item.category}
                                                             </p>
                                                         </div>
@@ -180,37 +180,37 @@ const Cart = () => {
                                                         {/* Delete Button */}
                                                         <button
                                                             onClick={() => setItemToDelete(item)}
-                                                            className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 translate-x-2 group-hover:translate-x-0"
+                                                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all sm:opacity-0 group-hover:opacity-100 focus:opacity-100 sm:translate-x-2 group-hover:translate-x-0"
                                                             title="Remove item"
                                                         >
-                                                            <Trash2 size={20} />
+                                                            <Trash2 size={18} className="sm:w-5 sm:h-5" />
                                                         </button>
                                                     </div>
 
                                                     {item.selectedSize && (
-                                                        <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-white rounded-lg border border-slate-100 shadow-sm">
-                                                            <span className="text-xs font-bold text-slate-400 uppercase">Size</span>
-                                                            <span className="text-sm font-bold text-slate-800">{item.selectedSize}</span>
+                                                        <div className="mt-2 sm:mt-3 inline-flex items-center gap-2 px-2 py-1 sm:px-3 sm:py-1 bg-white rounded-lg border border-slate-100 shadow-sm">
+                                                            <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase">Size</span>
+                                                            <span className="text-xs sm:text-sm font-bold text-slate-800">{item.selectedSize}</span>
                                                         </div>
                                                     )}
                                                 </div>
 
                                                 <div className="flex items-end justify-between mt-4">
-                                                    {/* Quantity Controls */}
-                                                    <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
+                                                    {/* Quantity Controls - Compact on mobile */}
+                                                    <div className="flex items-center gap-2 sm:gap-3 bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
                                                         <button
                                                             onClick={() => dispatch(updateCartItemQuantity({ id: item._id, selectedSize: item.selectedSize, quantity: item.quantity - 1 }))}
                                                             disabled={item.quantity <= 1}
-                                                            className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 disabled:opacity-30 transition-colors"
+                                                            className="p-1.5 sm:p-2 hover:bg-slate-100 rounded-lg text-slate-500 disabled:opacity-30 transition-colors"
                                                         >
                                                             <Minus size={14} strokeWidth={3} />
                                                         </button>
-                                                        <span className="w-6 text-center font-bold text-slate-800 tabular-nums">
+                                                        <span className="w-4 sm:w-6 text-center font-bold text-slate-800 tabular-nums text-sm sm:text-base">
                                                             {item.quantity}
                                                         </span>
                                                         <button
                                                             onClick={() => dispatch(updateCartItemQuantity({ id: item._id, selectedSize: item.selectedSize, quantity: item.quantity + 1 }))}
-                                                            className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
+                                                            className="p-1.5 sm:p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors"
                                                         >
                                                             <Plus size={14} strokeWidth={3} />
                                                         </button>
@@ -218,7 +218,7 @@ const Cart = () => {
 
                                                     {/* Price */}
                                                     <div className="text-right">
-                                                        <p className="text-2xl font-black text-slate-800 tracking-tight">
+                                                        <p className="text-lg sm:text-2xl font-black text-slate-800 tracking-tight">
                                                             ${(item.price * item.quantity).toFixed(2)}
                                                         </p>
                                                     </div>
@@ -300,6 +300,24 @@ const Cart = () => {
                     </div>
                 )}
             </main>
+
+            {/* Mobile Sticky Checkout Bar (Hidden on Desktop) */}
+            {cartItems.length > 0 && (
+                <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-200 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] z-40 md:hidden pb-safe">
+                    <div className="flex items-center justify-between gap-4 max-w-lg mx-auto">
+                        <div>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total</p>
+                            <p className="text-2xl font-black text-slate-900">${(finalTotal + totalPrice * 0.05).toFixed(2)}</p>
+                        </div>
+                        <button
+                            onClick={() => navigate('/place-order')}
+                            className="flex-1 bg-slate-900 text-white py-3.5 px-6 rounded-xl font-bold text-base shadow-lg shadow-slate-900/20 active:scale-95 transition-transform flex items-center justify-center gap-2"
+                        >
+                            Checkout <ArrowRight size={18} />
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Delete Confirmation Modal */}
             <AnimatePresence>

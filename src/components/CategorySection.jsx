@@ -86,7 +86,7 @@ export default function CategorySection({ categories, activeCategory, onSelect }
       </div>
 
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+        className="flex overflow-x-auto pb-4 gap-4 snap-x md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:pb-0 no-scrollbar touch-pan-x"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -117,8 +117,8 @@ export default function CategorySection({ categories, activeCategory, onSelect }
               whileTap={{ scale: 0.95 }}
               onClick={() => onSelect(isActive ? null : categoryName)}
               className={`
-                relative group flex flex-col items-center justify-center gap-3 p-6 rounded-2xl transition-all duration-300
-                border border-transparent
+                relative group flex flex-col items-center justify-center gap-2 md:gap-3 p-3 md:p-6 rounded-2xl transition-all duration-300
+                border border-transparent flex-shrink-0 w-24 md:w-auto snap-center
                 ${isActive
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                   : `${colorClass} text-foreground hover:shadow-xl hover:shadow-black/5`
@@ -126,17 +126,17 @@ export default function CategorySection({ categories, activeCategory, onSelect }
               `}
             >
               <div
-                className={`p-3 rounded-xl transition-colors ${isActive
+                className={`p-2.5 md:p-3 rounded-xl transition-colors ${isActive
                   ? "bg-white/20"
                   : "bg-white/60 group-hover:bg-white"
                   }`}
               >
                 <Icon
-                  className={`w-6 h-6 ${isActive ? "text-white" : "text-primary"
+                  className={`w-5 h-5 md:w-6 md:h-6 ${isActive ? "text-white" : "text-primary"
                     }`}
                 />
               </div>
-              <span className="font-semibold text-sm tracking-wide capitalize">
+              <span className="font-semibold text-xs md:text-sm tracking-wide capitalize truncate w-full text-center">
                 {categoryName}
               </span>
             </motion.button>

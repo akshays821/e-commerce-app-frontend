@@ -23,16 +23,19 @@ export default function ProductGrid({ products = [] }) {
           No products found
         </p>
       ) : (
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ staggerChildren: 0.1 }}
-        >
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </motion.div>
+        <>
+          {/* Mobile Note: Used grid-cols-3 for mobile for high density (3 items per row) */}
+          <motion.div
+            className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.1 }}
+          >
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </motion.div>
+        </>
       )}
     </section>
   );

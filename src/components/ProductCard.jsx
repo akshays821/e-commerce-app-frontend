@@ -57,7 +57,7 @@ export default function ProductCard({ product }) {
           />
 
           {product.category && (
-            <div className="absolute top-3 left-3">
+            <div className="hidden md:block absolute top-3 left-3">
               <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-xs font-semibold text-neutral-700 rounded-full shadow-sm">
                 {product.category}
               </span>
@@ -68,16 +68,16 @@ export default function ProductCard({ product }) {
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
         </div>
 
-        <div className="p-5">
-          <h3 className="font-semibold text-neutral-800 text-lg mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+        <div className="p-2 md:p-5">
+          <h3 className="font-semibold text-neutral-800 text-[10px] md:text-lg mb-1 md:mb-2 line-clamp-2 md:line-clamp-1 group-hover:text-primary transition-colors leading-tight">
             {product.title}
           </h3>
-          <div className="flex items-center justify-between">
-            <p className="text-xl font-bold text-primary">
+          <div className="flex items-center justify-between mt-1 md:mt-0">
+            <p className="text-sm md:text-xl font-bold text-primary">
               ₹{product.price}
             </p>
-            <button className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-              +
+            <button className="hidden md:flex w-8 h-8 rounded-full bg-primary/10 text-primary items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+              <span className="text-xl leading-none mb-0.5">+</span>
             </button>
           </div>
         </div>

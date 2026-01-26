@@ -1,8 +1,8 @@
-import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight, Tag, Truck } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Users, Settings, LogOut, ChevronRight, Tag, Truck, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo2.png";
 
-export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
+export default function AdminSidebar({ activeTab, setActiveTab, onLogout, isOpen, onClose }) {
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
         { id: "products", label: "Products", icon: ShoppingBag },
@@ -12,11 +12,16 @@ export default function AdminSidebar({ activeTab, setActiveTab, onLogout }) {
     ];
 
     return (
-        <div className="w-64 h-screen bg-white border-r border-gray-100 flex flex-col fixed left-0 top-0 z-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        <div className={`w-64 h-screen bg-white border-r border-gray-100 flex flex-col fixed left-0 top-0 z-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-transform duration-300 md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
             {/* Logo Area */}
-            <Link to="/" className="flex items-center justify-center p-4 border-b border-gray-100">
-                <img src={logo} alt="ShopAI" className="h-20 w-auto object-contain" />
-            </Link>
+            <div className="flex items-center justify-between p-4 border-b border-gray-100 h-20">
+                <Link to="/" className="flex items-center justify-center flex-1">
+                    <img src={logo} alt="ShopAI" className="h-10 w-auto object-contain" />
+                </Link>
+                <button onClick={onClose} className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+                    <X size={20} />
+                </button>
+            </div>
 
             {/* Main Menu */}
             <nav className="flex-1 px-4 space-y-2">

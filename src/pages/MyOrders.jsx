@@ -78,7 +78,7 @@ const MyOrders = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 py-12 px-4 md:px-8 relative font-sans">
+        <div className="min-h-screen bg-slate-50 text-slate-900 pt-24 pb-12 md:py-12 px-4 md:px-8 relative font-sans">
 
             {/* Tracking Modal */}
             <AnimatePresence>
@@ -99,15 +99,15 @@ const MyOrders = () => {
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-10 flex flex-col md:flex-row justify-between items-end gap-4 text-center md:text-left"
+                    className="mb-8 md:mb-10 flex flex-col md:flex-row justify-between items-center md:items-end gap-4 text-center md:text-left"
                 >
                     <div>
-                        <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">My Orders</h1>
-                        <p className="text-slate-500 text-lg">Track your extensive shopping history.</p>
+                        <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-2 tracking-tight">My Orders</h1>
+                        <p className="text-slate-500 text-base md:text-lg">Track your extensive shopping history.</p>
                     </div>
                     <button
                         onClick={() => navigate("/")}
-                        className="hidden md:flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm"
                     >
                         <ShoppingBag className="w-4 h-4" /> Continue Shopping
                     </button>
@@ -118,13 +118,13 @@ const MyOrders = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="flex flex-wrap gap-2 mb-8"
+                    className="flex flex-nowrap md:flex-wrap overflow-x-auto pb-2 md:pb-0 gap-2 mb-6 md:mb-8 no-scrollbar"
                 >
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === tab.id
+                            className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border whitespace-nowrap ${activeTab === tab.id
                                 ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20 transform scale-105"
                                 : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
                                 }`}
@@ -136,7 +136,7 @@ const MyOrders = () => {
 
                 {/* Orders Grid */}
                 <div className="space-y-4">
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence>
                         {filteredOrders.length === 0 ? (
                             <motion.div
                                 key="empty"
@@ -194,24 +194,32 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="group bg-[#FFFCF6]/90 backdrop-blur-md border border-stone-200/60 rounded-2xl p-5 hover:shadow-xl hover:shadow-violet-900/5 transition-all duration-300 relative overflow-hidden"
+            className="group bg-[#FFFCF6]/90 backdrop-blur-md border border-stone-200/60 rounded-2xl p-3 md:p-5 hover:shadow-xl hover:shadow-violet-900/5 transition-all duration-300 relative overflow-hidden"
         >
             <div className="absolute inset-0 bg-gradient-to-br from-violet-50/40 to-indigo-50/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <div className="relative z-10">
-                {/* Top Row: ID, Date, Status */}
-                <div className="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-6">
+                {/* Top Row: Compact Header for Mobile */}
+                <div className="flex justify-between items-start gap-3 mb-3 md:mb-6">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500">
+                        {/* Desktop Icon */}
+                        <div className="hidden md:flex w-12 h-12 rounded-2xl bg-slate-100 items-center justify-center text-slate-500">
                             <Hash className="w-6 h-6" />
                         </div>
                         <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Order ID</p>
-                            <p className="font-mono text-lg font-bold text-slate-900">#{order._id.slice(-8).toUpperCase()}</p>
+                            <p className="hidden md:block text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Order ID</p>
+                            <div className="flex flex-col md:block">
+                                <p className="font-mono text-sm md:text-lg font-bold text-slate-900">#{order._id.slice(-8).toUpperCase()}</p>
+                                {/* Mobile Date under ID */}
+                                <p className="md:hidden text-[10px] font-medium text-slate-500 mt-0.5">
+                                    {new Date(order.createdAt).toLocaleDateString()}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                        <div className="hidden md:block h-10 w-px bg-slate-100"></div>
+                    {/* Desktop Date Section */}
+                    <div className="hidden md:flex items-center gap-4">
+                        <div className="h-10 w-px bg-slate-100"></div>
                         <div>
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Date Placed</p>
                             <p className="text-base font-bold text-slate-700">
@@ -220,22 +228,23 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                         </div>
                     </div>
 
-                    <div className="md:ml-auto">
+                    {/* Status Badge */}
+                    <div>
                         <StatusBadge status={order.orderStatus} />
                     </div>
                 </div>
 
-                {/* Middle: Items & Stepper */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-6 border-b border-slate-100">
+                {/* Middle: Items & Price */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 pb-3 md:pb-6 border-b border-slate-100">
                     {/* Images Preview */}
                     <div className="lg:col-span-2">
-                        <div className="flex items-center gap-4 overflow-x-auto pb-2 custom-scrollbar">
+                        <div className="flex items-center gap-2 md:gap-4 overflow-x-auto pb-1 md:pb-2 custom-scrollbar">
                             {order.orderItems.map((item) => (
                                 <div key={item._id} className="relative flex-shrink-0 group/item">
-                                    <div className="w-16 h-16 rounded-xl border border-slate-200 overflow-hidden bg-white">
+                                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-lg md:rounded-xl border border-slate-200 overflow-hidden bg-white">
                                         <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/item:scale-110" />
                                     </div>
-                                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-slate-900 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-md">
+                                    <div className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 w-4 h-4 md:w-6 md:h-6 bg-slate-900 text-white text-[9px] md:text-xs font-bold rounded-full flex items-center justify-center shadow-md">
                                         {item.qty}
                                     </div>
                                 </div>
@@ -243,19 +252,21 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                         </div>
                     </div>
 
-                    {/* Total Price */}
-                    <div className="flex flex-col justify-center items-start lg:items-end">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Amount</p>
-                        <p className="text-3xl font-black text-slate-900">${order.totalAmount}</p>
-                        <p className="text-xs text-emerald-600 font-bold mt-1 flex items-center gap-1">
-                            <CheckCircle className="w-3 h-3" /> Paid via {order.paymentMethod}
+                    {/* Total Price & Payment */}
+                    <div className="flex flex-row md:flex-col justify-between md:justify-center items-center md:items-end">
+                        <div className="flex flex-col md:items-end">
+                            <p className="hidden md:block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Amount</p>
+                            <p className="text-lg md:text-3xl font-black text-slate-900">${order.totalAmount}</p>
+                        </div>
+                        <p className="text-[10px] md:text-xs text-emerald-600 font-bold mt-1 flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" /> <span className="hidden md:inline">Paid via </span>{order.paymentMethod}
                         </p>
                     </div>
                 </div>
 
-                {/* Stepper Visual -- Hide if Cancelled */}
+                {/* Stepper Visual -- Hidden on Mobile for compactness */}
                 {!isCancelled && currentStepIndex !== -1 && (
-                    <div className="mt-8 relative">
+                    <div className="hidden md:block mt-8 relative">
                         {/* Progress Bar Background */}
                         <div className="absolute top-1/2 left-0 w-full h-1.5 bg-slate-100 rounded-full -translate-y-1/2" />
 
@@ -293,15 +304,27 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                     </div>
                 )}
 
+                {/* Mobile Simple Status Text (Instead of Stepper) */}
+                {!isCancelled && (
+                    <div className="md:hidden mt-3 flex items-center gap-2 text-xs font-medium text-slate-500">
+                        {getStepIcon(order.orderStatus.toLowerCase())}
+                        <span className="capitalize text-slate-700 font-bold">{order.orderStatus}</span>
+                        <span className="text-[10px] text-slate-400">• Estimated within 5 days</span>
+                    </div>
+                )}
+
+
                 {isCancelled && (
-                    <div className="mt-8 bg-red-50 border border-red-100 rounded-xl p-4 flex items-center gap-3 text-red-700">
-                        <XCircle className="w-5 h-5 flex-shrink-0" />
-                        <p className="font-bold text-sm">This order has been cancelled.</p>
+                    <div className="mt-3 md:mt-8 bg-red-50 border border-red-100 rounded-xl p-3 md:p-4 flex items-center gap-2 md:gap-3 text-red-700">
+                        <XCircle className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+                        <p className="font-bold text-xs md:text-sm">Order Cancelled</p>
                     </div>
                 )}
 
                 {/* Footer Actions */}
-                <div className="mt-6 flex justify-end gap-3 items-center">
+                <div className="mt-3 md:mt-6 flex justify-between md:justify-end gap-2 md:gap-3 items-center">
+                    {/* Mobile: View Details takes full width if only one button? No, keep side by side */}
+
                     {(isCancelled || order.orderStatus === "delivered") && (
                         <button
                             onClick={(e) => {
@@ -309,7 +332,7 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                                 dispatch(showModal({
                                     type: "danger",
                                     title: "Delete Order?",
-                                    message: "Only you can see this. Delete from history?",
+                                    message: "Delete from history?",
                                     confirmText: "Delete",
                                     showCancel: true,
                                     onConfirm: async () => {
@@ -325,27 +348,30 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                                     }
                                 }));
                             }}
-                            className="p-2.5 rounded-xl border border-red-100 text-red-500 hover:bg-red-50 transition-colors"
+                            className="p-2 md:p-2.5 rounded-lg md:rounded-xl border border-red-100 text-red-500 hover:bg-red-50 transition-colors"
                             title="Delete Order"
                         >
                             <Trash2 className="w-4 h-4" />
                         </button>
                     )}
-                    <button
-                        onClick={() => navigate(`/order/${order._id}`)}
-                        className="px-5 py-2 rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-colors text-xs"
-                    >
-                        View Details
-                    </button>
-                    {/* Only show Track Order if not cancelled and not pending (usually tracking starts after processing) */}
-                    {!isCancelled && order.orderStatus !== 'pending' && (
+
+                    <div className="flex gap-2 w-full md:w-auto justify-end">
                         <button
-                            onClick={onTrack}
-                            className="px-5 py-2 rounded-lg bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10 text-xs"
+                            onClick={() => navigate(`/order/${order._id}`)}
+                            className="flex-1 md:flex-none px-3 py-2 md:px-5 md:py-2 rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-colors text-xs whitespace-nowrap"
                         >
-                            Track Order
+                            View Details
                         </button>
-                    )}
+                        {/* Only show Track Order if not cancelled and not pending */}
+                        {!isCancelled && order.orderStatus !== 'pending' && (
+                            <button
+                                onClick={onTrack}
+                                className="flex-1 md:flex-none px-3 py-2 md:px-5 md:py-2 rounded-lg bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/10 text-xs whitespace-nowrap"
+                            >
+                                Track
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </motion.div>

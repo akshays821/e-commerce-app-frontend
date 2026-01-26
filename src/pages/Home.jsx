@@ -151,14 +151,14 @@ export default function Home() {
 
       <main>
         {/* Hero Section with Search integrated visually */}
-        <div className="relative pb-8 pt-32">
+        <div className="relative pb-0 md:pb-8 pt-20 md:pt-32">
           <HeroSection />
           {/* SearchBar removed from here as it is now in Header */}
         </div>
 
         {/* Categories & Products Section - White Card Effect */}
-        <div className="bg-white/40 backdrop-blur-3xl border-t border-white/20 min-h-screen rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.02)] -mt-4 relative z-10">
-          <div className="max-w-7xl mx-auto px-4 py-16 space-y-16">
+        <div className="bg-white/40 backdrop-blur-3xl border-t border-white/20 min-h-screen rounded-t-[2rem] md:rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.02)] -mt-6 md:-mt-4 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 space-y-8 md:space-y-16">
 
             <CategorySection
               categories={displayCategories}
@@ -168,16 +168,25 @@ export default function Home() {
 
             <div id="products-section" className="scroll-mt-20">
               {/* Reset filter banner if active */}
-              {(activeCategory) && (
-                <div className="mb-6 flex items-center justify-between bg-primary/5 px-6 py-4 rounded-2xl border border-primary/10">
+              {/* Reset filter banner if active (Category, Search, or AI) */}
+              {(activeCategory || search || aiResults) && (
+                <div className="mb-6 flex items-center justify-between bg-white px-6 py-4 rounded-2xl border border-slate-200 shadow-sm">
                   <div>
-                    <h3 className="font-semibold text-primary">Showing results for <span className="text-foreground">"{activeCategory}"</span></h3>
+                    <h3 className="font-semibold text-slate-700">
+                      Showing results for <span className="text-slate-900 font-bold">"{activeCategory || search}"</span>
+                    </h3>
                   </div>
                   <button
-                    onClick={() => setActiveCategory(null)}
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground hover:underline"
+                    onClick={() => {
+                      setActiveCategory(null);
+                      setSearch("");
+                      handleResetSearch();
+                      // Also clear URL params
+                      navigate('/');
+                    }}
+                    className="text-sm font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all"
                   >
-                    Clear filter
+                    Clear Filter
                   </button>
                 </div>
               )}

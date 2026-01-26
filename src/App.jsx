@@ -29,6 +29,7 @@ function AppContent() {
 
   const hideChatbot =
     location.pathname === "/login" ||
+    location.pathname === "/signup" ||
     location.pathname === "/admin/login";
 
   return (

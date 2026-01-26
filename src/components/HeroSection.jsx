@@ -34,59 +34,72 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 2000);
+    }, 4000); // 4s for better readability
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <section className="relative h-[300px] md:h-[450px] w-full overflow-hidden mb-12 rounded-b-[2.5rem] shadow-xl group">
-      <AnimatePresence>
+    <section className="relative h-[280px] md:h-[550px] w-full overflow-hidden mb-4 md:mb-12 rounded-b-[2rem] md:rounded-b-[3.5rem] shadow-2xl group">
+      <AnimatePresence mode="wait">
         <motion.div
           key={current}
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="absolute inset-0"
         >
           {/* Background Image with Gradient Overlay */}
-          <div className="absolute inset-0 bg-black/40 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10" />
+          <div className="absolute inset-0 bg-black/10 z-10" />
           <img
             src={slides[current].image}
             alt={slides[current].title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
 
           {/* Content */}
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 mt-8">
-            <motion.h1
-              initial={{ y: 30, opacity: 0 }}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pb-6 md:pb-0">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tighter"
+              className="space-y-2 md:space-y-4 max-w-4xl"
             >
-              {slides[current].title}
-            </motion.h1>
-            <motion.p
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-xl md:text-2xl text-white/90 font-light max-w-2xl"
-            >
-              {slides[current].subtitle}
-            </motion.p>
+              <h1 className="text-3xl md:text-8xl font-black text-white tracking-widest uppercase drop-shadow-lg">
+                <span className="block text-xs md:text-3xl font-medium tracking-[0.5em] mb-1 md:mb-2 opacity-90">
+                  New Arrival
+                </span>
+                {slides[current].title}
+              </h1>
+
+              <p className="text-sm md:text-2xl text-white/90 font-medium max-w-[250px] md:max-w-2xl mx-auto leading-tight md:leading-relaxed drop-shadow-md">
+                {slides[current].subtitle}
+              </p>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mt-4 md:mt-8 px-6 py-2 md:px-8 md:py-3 bg-white text-black font-bold rounded-full text-xs md:text-base tracking-widest hover:bg-neutral-100 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+              >
+                EXPLORE NOW
+              </motion.button>
+            </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>
 
       {/* Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-3">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrent(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === current ? "w-8 bg-white" : "bg-white/50 hover:bg-white/80"
+            className={`transition-all duration-500 rounded-full shadow-lg ${index === current
+              ? "w-8 h-2 bg-white"
+              : "w-2 h-2 bg-white/40 hover:bg-white/70"
               }`}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>

@@ -10,14 +10,25 @@ const PlaceOrder = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
+
+    // Support both single item buy-now and multiple items repayment (without touching cart)
     const buyNowItem = location.state?.buyNowItem;
+    const buyNowItems = location.state?.buyNowItems;
 
     // Get User and Cart from Redux
     const { cartItems: reduxCartItems, totalPrice: reduxTotalPrice } = useSelector((state) => state.cart);
 
-    // Determine items to show (Buy Now vs Cart)
-    const cartItems = buyNowItem ? [buyNowItem] : reduxCartItems;
-    const totalPrice = buyNowItem ? buyNowItem.price * buyNowItem.quantity : reduxTotalPrice;
+    // Determine items to show (Direct Buy List > Single Direct Buy > Cart)
+    let cartItems = reduxCartItems;
+    let totalPrice = reduxTotalPrice;
+
+    if (buyNowItems && buyNowItems.length > 0) {
+        cartItems = buyNowItems;
+        totalPrice = buyNowItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    } else if (buyNowItem) {
+        cartItems = [buyNowItem];
+        totalPrice = buyNowItem.price * buyNowItem.quantity;
+    }
 
     const { token, user } = useSelector((state) => state.userAuth);
 
@@ -93,7 +104,7 @@ const PlaceOrder = () => {
 
             if (data.success) {
                 // Set flag for OrderSuccess to know if it should clear cart or not
-                if (buyNowItem) {
+                if (buyNowItem || (buyNowItems && buyNowItems.length > 0)) {
                     localStorage.setItem("isDirectBuy", "true");
                 } else {
                     localStorage.removeItem("isDirectBuy");
@@ -113,9 +124,9 @@ const PlaceOrder = () => {
     return (
         <div className="min-h-screen relative bg-slate-50 text-slate-900 font-sans overflow-hidden selection:bg-blue-100 selection:text-blue-900">
 
-            {/* Soft Background Mesh */}
-            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-100/50 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-purple-100/50 rounded-full blur-[120px] pointer-events-none" />
+            {/* Soft Background Mesh - Violet Vibes */}
+            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-violet-200/40 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-fuchsia-200/40 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-40 mix-blend-soft-light pointer-events-none"></div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-20">
@@ -129,7 +140,7 @@ const PlaceOrder = () => {
                     <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-2 text-slate-900">
                         Secure Checkout
                     </h1>
-                    <div className="h-1.5 w-24 mx-auto bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
+                    <div className="h-1.5 w-24 mx-auto bg-gradient-to-r from-violet-600 to-fuchsia-500 rounded-full shadow-lg shadow-violet-500/20" />
                 </motion.div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -141,10 +152,10 @@ const PlaceOrder = () => {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="lg:col-span-7"
                     >
-                        <div className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl p-8 md:p-10 shadow-xl shadow-slate-200/50 relative overflow-hidden">
+                        <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-3xl p-8 md:p-10 shadow-xl shadow-violet-100/50 relative overflow-hidden">
 
-                            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800">
-                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-xs text-white shadow-lg shadow-slate-900/20">1</span>
+                            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-900">
+                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-600 text-xs text-white shadow-lg shadow-violet-600/30">1</span>
                                 Shipping Details
                             </h2>
 
@@ -194,9 +205,9 @@ const PlaceOrder = () => {
                                 <div className="pt-8">
                                     <button
                                         type="submit"
-                                        className="w-full relative group overflow-hidden bg-slate-900 text-white py-4 rounded-xl font-bold text-lg tracking-wide shadow-xl shadow-slate-900/20 transition-all hover:scale-[1.01] active:scale-[0.99] hover:shadow-2xl hover:shadow-blue-900/20"
+                                        className="w-full relative group overflow-hidden bg-violet-600 text-white py-4 rounded-xl font-bold text-lg tracking-wide shadow-xl shadow-violet-600/20 transition-all hover:scale-[1.01] active:scale-[0.99] hover:shadow-2xl hover:shadow-fuchsia-900/20"
                                     >
-                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-fuchsia-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                         <span className="relative z-10 flex items-center justify-center gap-2">
                                             Proceed to Pay <span className="text-xl">→</span>
                                         </span>
@@ -221,8 +232,8 @@ const PlaceOrder = () => {
                     >
                         <div className="sticky top-24 space-y-6">
                             <div className="bg-white/90 backdrop-blur-xl border border-white/40 rounded-3xl p-8 shadow-xl shadow-slate-200/50">
-                                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-800">
-                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 text-xs text-white shadow-lg shadow-blue-500/30">2</span>
+                                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-slate-900">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-tr from-violet-600 to-fuchsia-500 text-xs text-white shadow-lg shadow-violet-500/30">2</span>
                                     Your Order
                                 </h2>
 
@@ -276,7 +287,7 @@ const PlaceOrder = () => {
 // Reusable Input Field Component
 const InputField = ({ label, name, value, onChange, placeholder }) => (
     <div className="relative group">
-        <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide group-focus-within:text-blue-600 transition-colors">
+        <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide group-focus-within:text-violet-600 transition-colors">
             {label}
         </label>
         <input
@@ -285,7 +296,7 @@ const InputField = ({ label, name, value, onChange, placeholder }) => (
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder-slate-400 font-medium outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 shadow-sm"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder-slate-400 font-medium outline-none focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all duration-300 shadow-sm"
         />
     </div>
 );
