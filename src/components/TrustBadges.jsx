@@ -1,5 +1,6 @@
 import { Truck, ShieldCheck, Clock, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const badges = [
     {
@@ -25,6 +26,14 @@ const badges = [
 ];
 
 export default function TrustBadges() {
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % badges.length);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
     return (
         <section className="py-6 md:py-10 relative z-10 bg-white">
 
@@ -41,8 +50,8 @@ export default function TrustBadges() {
                                 className="flex flex-col items-center text-center group bg-white md:bg-transparent p-3 md:p-0 rounded-xl md:rounded-none shadow-sm md:shadow-none border md:border-none border-slate-100"
                             >
                                 {/* Icon Container - Compact on mobile */}
-                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white md:bg-white border border-slate-200 flex items-center justify-center mb-2 md:mb-3 group-hover:scale-110 group-hover:border-violet-200 group-hover:shadow-lg group-hover:shadow-violet-900/5 transition-all duration-500 shadow-sm">
-                                    <badge.icon size={18} strokeWidth={1.5} className="text-slate-400 group-hover:text-violet-600 transition-colors duration-300 md:w-5 md:h-5" />
+                                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-2 md:mb-3 transition-all duration-500 shadow-sm ${index === activeIndex ? "border-violet-200 shadow-lg shadow-violet-900/5 scale-110" : "bg-white border-slate-200"} md:bg-white md:border-slate-200 md:group-hover:scale-110 md:group-hover:border-violet-200 md:group-hover:shadow-lg md:group-hover:shadow-violet-900/5`}>
+                                    <badge.icon size={18} strokeWidth={1.5} className={`transition-colors duration-300 md:w-5 md:h-5 ${index === activeIndex ? "text-violet-600" : "text-slate-400"} md:text-slate-400 md:group-hover:text-violet-600`} />
                                 </div>
 
                                 {/* Text Content */}

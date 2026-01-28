@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import toast from "react-hot-toast";
 
 import {
@@ -52,8 +52,8 @@ export default function UserLogin() {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/login`,
+      const res = await api.post(
+        "/api/users/login",
         { email, password }
       );
 
@@ -80,8 +80,8 @@ export default function UserLogin() {
 
   const handleGoogleSuccess = async (response) => {
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/google`,
+      const res = await api.post(
+        "/api/users/google",
         { credential: response.credential }
       );
 

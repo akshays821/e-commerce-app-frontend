@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
+import api from "../../utils/api";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../../redux/slices/productsSlice";
@@ -29,7 +29,7 @@ export default function ProductForm({ onClose, productToEdit = null }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
+        const { data } = await api.get("/api/categories");
         setAvailableCategories(data);
       } catch (error) {
         console.error("Failed to load categories");
@@ -51,9 +51,10 @@ export default function ProductForm({ onClose, productToEdit = null }) {
 
       // Set existing image as preview
       if (productToEdit.image) {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
         const imgUrl = productToEdit.image.startsWith("http")
           ? productToEdit.image
-          : `${import.meta.env.VITE_API_BASE_URL}/${productToEdit.image.replace(/\\/g, "/")}`;
+          : `${baseUrl}/${productToEdit.image.replace(/\\/g, "/")}`;
         setImagePreview(imgUrl);
       }
     }
@@ -130,8 +131,8 @@ export default function ProductForm({ onClose, productToEdit = null }) {
 
       if (productToEdit) {
         // Update Mode
-        await axios.put(
-          `${import.meta.env.VITE_API_BASE_URL}/api/products/${productToEdit._id}`,
+        await api.put(
+          `/api/products/${productToEdit._id}`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -143,8 +144,8 @@ export default function ProductForm({ onClose, productToEdit = null }) {
           setLoading(false);
           return;
         }
-        await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/products`,
+        await api.post(
+          "/api/products",
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         );

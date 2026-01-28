@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "../redux/slices/cartSlice";
 import toast from "react-hot-toast";
 import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, Star, Plus, Zap } from "lucide-react";
+import GlobalLoading from "../components/GlobalLoading";
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -80,8 +81,8 @@ export default function ProductDetails() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`
+                const res = await api.get(
+                    `/api/products/${id}`
                 );
                 setProduct(res.data);
             } catch (error) {
@@ -96,17 +97,12 @@ export default function ProductDetails() {
     const getImageUrl = (imagePath) => {
         if (!imagePath) return "/placeholder.png";
         if (imagePath.startsWith("http")) return imagePath;
-        return `${import.meta.env.VITE_API_BASE_URL}/${imagePath.replace(/\\/g, "/")}`;
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+        return `${baseUrl}/${imagePath.replace(/\\/g, "/")}`;
     };
 
     if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-[#fcfcfc]">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin" />
-                </div>
-            </div>
-        );
+        return <GlobalLoading isLoading={true} message="Loading Details..." />;
     }
 
     if (!product) return null;

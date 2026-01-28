@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/api";
 import toast from "react-hot-toast";
 import { ShieldAlert, Fingerprint, Lock, ChevronRight } from "lucide-react";
 
@@ -23,8 +23,8 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/admin/login`,
+      const res = await api.post(
+        "/api/admin/login",
         { email, password }
       );
 

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import axios from "axios";
+import api from "../../utils/api";
 
 // Async Thunks
 export const fetchCart = createAsyncThunk(
@@ -16,7 +16,7 @@ export const fetchCart = createAsyncThunk(
         },
       };
       
-      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/cart`, config);
+      const { data } = await api.get("/api/cart", config);
       return data; 
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Failed to fetch cart");
@@ -45,7 +45,7 @@ export const addItemToCart = createAsyncThunk(
         quantity: item.quantity || 1
       };
 
-      const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/cart/add`, payload, config);
+      const { data } = await api.post("/api/cart/add", payload, config);
       return data; // Returns updated cart list from backend
 
     } catch (error) {
@@ -66,7 +66,7 @@ export const removeItemFromCart = createAsyncThunk(
           },
         };
 
-        const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/cart/remove`, { productId: id, size: selectedSize }, config);
+        const { data } = await api.post("/api/cart/remove", { productId: id, size: selectedSize }, config);
         return data; // Returns updated cart list
       } catch (error) {
         toast.error(error.response?.data?.message || "Failed to remove item");
@@ -86,7 +86,7 @@ export const updateCartItemQuantity = createAsyncThunk(
                 },
             };
 
-            const { data } = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/cart/update`, { productId: id, size: selectedSize, quantity }, config);
+            const { data } = await api.put("/api/cart/update", { productId: id, size: selectedSize, quantity }, config);
             return data; // Returns updated cart list
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to update quantity");

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import api from "../utils/api";
 import toast from "react-hot-toast";
 
 import {
@@ -39,8 +39,8 @@ export default function VerifyEmail() {
         dispatch(loginStart());
 
         try {
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_BASE_URL}/api/users/verify-otp`,
+            const res = await api.post(
+                "/api/users/verify-otp",
                 { email, otp }
             );
 

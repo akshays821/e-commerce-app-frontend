@@ -1,13 +1,14 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { fetchProducts } from "../redux/slices/productsSlice";
 import { logout } from "../redux/slices/userAuthSlice";
 import Lottie from "lottie-react";
 import toast from "react-hot-toast";
 
 import searchAnimation from "../assets/search imm.json";
+import GlobalLoading from "../components/GlobalLoading";
 
 import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
@@ -42,8 +43,10 @@ export default function Home() {
 
   // FETCH PRODUCTS
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
 
 
   // AI SEARCH HELPER (Direct for URL params)
@@ -52,7 +55,7 @@ export default function Home() {
     try {
       setAiLoading(true);
       setActiveCategory(null);
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/search-ai`, { message: query });
+      const res = await api.post("/api/search-ai", { message: query });
       setAiResults(res.data.products);
     } catch (error) {
       console.error(error);
@@ -73,7 +76,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
+        const { data } = await api.get("/api/categories");
         setCategories(data.map(c => c.name));
       } catch (err) {
         console.error("Failed to fetch categories", err);
@@ -94,8 +97,8 @@ export default function Home() {
     try {
       setAiLoading(true);
       setActiveCategory(null); // Clear category filter on AI search
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/search-ai`,
+      const res = await api.post(
+        "/api/search-ai",
         { message: search }
       );
 
@@ -191,16 +194,8 @@ export default function Home() {
                 </div>
               )}
 
-              {loading && (
-                <div className="flex flex-col items-center justify-center py-20 min-h-[400px]">
-                  <Lottie
-                    animationData={searchAnimation}
-                    loop={true}
-                    className="w-48 h-48 opacity-80 mix-blend-multiply"
-                  />
-                  <p className="text-muted-foreground font-medium mt-4">Curating products for you...</p>
-                </div>
-              )}
+              {/* Use GlobalLoading instead of inline text/spinner */}
+              <GlobalLoading isLoading={loading || aiLoading} message={aiLoading ? "AI is curating choices..." : "Loading Collection..."} />
 
               {error && (
                 <div className="text-center py-20 bg-red-50 rounded-2xl border border-red-100">
@@ -208,21 +203,7 @@ export default function Home() {
                 </div>
               )}
 
-              {aiLoading && (
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                  <div className="bg-card px-8 py-6 rounded-3xl flex flex-col items-center gap-4 shadow-2xl animate-in fade-in zoom-in duration-300">
-                    <Lottie
-                      animationData={searchAnimation}
-                      loop
-                      className="w-32 h-32 opacity-90 mix-blend-multiply"
-                    />
-                    <div className="text-center">
-                      <h3 className="text-lg font-bold text-foreground">AI is thinking...</h3>
-                      <p className="text-sm text-muted-foreground">Finding the best matches for you</p>
-                    </div>
-                  </div>
-                </div>
-              )}
+
 
               <ProductGrid products={productsToShow} />
 

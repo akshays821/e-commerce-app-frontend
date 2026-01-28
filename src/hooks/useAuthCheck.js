@@ -4,7 +4,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { logout } from "../redux/slices/userAuthSlice";
 import { triggerBannedModal } from "../redux/slices/uiSlice";
 import { fetchCart } from "../redux/slices/cartSlice";
@@ -19,7 +19,7 @@ export const useAuthCheck = () => {
       if (!isAuthenticated || !token) return;
 
       try {
-        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/profile`, {
+        await api.get("/api/users/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

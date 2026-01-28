@@ -1,12 +1,13 @@
 
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import api from "../utils/api";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { User, Mail, Shield, MapPin, Save, Grid, Clock, ChevronRight, LogOut, Package, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logout, updateUser } from "../redux/slices/userAuthSlice";
+import GlobalLoading from "../components/GlobalLoading";
 
 const UserProfile = () => {
     const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const UserProfile = () => {
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
-                const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/profile`, config);
+                const { data } = await api.get("/api/users/profile", config);
                 const defaultAddress = { street: "", city: "", zip: "", country: "", phone: "" };
 
                 setProfileData({
@@ -77,7 +78,7 @@ const UserProfile = () => {
                 address: profileData.address
             };
 
-            await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/users/profile`, payload, config);
+            await api.put("/api/users/profile", payload, config);
 
             // Update Redux state with new profile info
             dispatch(updateUser({
@@ -99,9 +100,7 @@ const UserProfile = () => {
         navigate("/login");
     };
 
-    if (loading) return <div className="text-center p-10 font-bold">Loading Profile...</div>;
-
-    return (
+    if (loading) return <GlobalLoading isLoading={true} message="Loading Profile..." />; return (
         <div className="min-h-screen bg-slate-50 pt-28 pb-12 md:py-20 px-4 relative font-sans text-slate-900 overflow-hidden">
 
             {/* Decorations */}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Activity, DollarSign, Package, Users, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
-import axios from "axios";
+import api from "../../utils/api";
 
 export default function DashboardStats() {
     const [stats, setStats] = useState({
@@ -16,8 +16,8 @@ export default function DashboardStats() {
         const fetchStats = async () => {
             try {
                 const token = localStorage.getItem("adminToken");
-                const { data } = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/admin/stats`,
+                const { data } = await api.get(
+                    "/api/admin/stats",
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setStats(data);

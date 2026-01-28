@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { Edit, Trash2, Package } from "lucide-react";
-import axios from "axios";
+import api from "../../utils/api";
 import toast from "react-hot-toast";
 import { fetchProducts } from "../../redux/slices/productsSlice";
 import ConfirmDialog from "./ConfirmDialog";
+import GlobalLoading from "../GlobalLoading";
 
 export default function ProductList({ categoryFilter, onEdit }) {
   const dispatch = useDispatch();
@@ -42,8 +43,8 @@ export default function ProductList({ categoryFilter, onEdit }) {
   const executeDelete = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/api/products/${modal.productId}`,
+      await api.delete(
+        `/api/products/${modal.productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -57,11 +58,7 @@ export default function ProductList({ categoryFilter, onEdit }) {
   };
 
   if (loading) {
-    return (
-      <div className="p-16 text-center text-muted-foreground">
-        Loading products…
-      </div>
-    );
+    return <GlobalLoading isLoading={true} message="Loading Products..." />;
   }
 
   if (!products.length) {
@@ -93,7 +90,8 @@ export default function ProductList({ categoryFilter, onEdit }) {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "https://placehold.co/100?text=No+Image";
     if (imagePath.startsWith("http")) return imagePath;
-    return `${import.meta.env.VITE_API_BASE_URL}/${imagePath.replace(/\\/g, "/")}`;
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+    return `${baseUrl}/${imagePath.replace(/\\/g, "/")}`;
   };
 
   return (

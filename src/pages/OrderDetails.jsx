@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal } from "../redux/slices/uiSlice";
@@ -27,8 +27,8 @@ const OrderDetails = () => {
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
-                const { data } = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}`,
+                const { data } = await api.get(
+                    `/api/orders/${id}`,
                     config
                 );
                 setOrder(data);
@@ -48,15 +48,15 @@ const OrderDetails = () => {
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
-            await axios.put(
-                `${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}/cancel`,
+            await api.put(
+                `/api/orders/${id}/cancel`,
                 {},
                 config
             );
             toast.success("Order cancelled successfully");
             // Refresh order data
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}`,
+            const { data } = await api.get(
+                `/api/orders/${id}`,
                 config
             );
             setOrder(data);
@@ -93,7 +93,7 @@ const OrderDetails = () => {
                 // Handle populated product vs ID string
                 const productId = typeof item.product === 'object' ? item.product._id : item.product;
 
-                const { data: fetchedData } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products/${productId}`);
+                const { data: fetchedData } = await api.get(`/api/products/${productId}`);
 
                 // Handle potential response structure: { product: {...} } or {...}
                 const product = fetchedData.product || fetchedData;

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import chatbotAvatar from "../assets/chatbot.png";
@@ -35,8 +35,8 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/chatbot`,
+      const res = await api.post(
+        "/api/chatbot",
         { message: text }
       );
 

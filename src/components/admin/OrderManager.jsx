@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { Search, Filter, ChevronLeft, ChevronRight, Eye, Truck, CheckCircle, XCircle, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import GlobalLoading from "../GlobalLoading";
 
 export default function OrderManager() {
     const [orders, setOrders] = useState([]);
@@ -23,8 +24,8 @@ export default function OrderManager() {
     const fetchOrders = async () => {
         try {
             const token = localStorage.getItem("adminToken");
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/orders/admin/all`,
+            const { data } = await api.get(
+                "/api/orders/admin/all",
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setOrders(data);
@@ -40,8 +41,8 @@ export default function OrderManager() {
         setUpdatingStatus(true);
         try {
             const token = localStorage.getItem("adminToken");
-            await axios.put(
-                `${import.meta.env.VITE_API_BASE_URL}/api/orders/admin/${orderId}/status`,
+            await api.put(
+                `/api/orders/admin/${orderId}/status`,
                 { status: newStatus },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -91,6 +92,9 @@ export default function OrderManager() {
 
     return (
         <div className="space-y-6">
+            {/* Global Loading Overlay for initial fetch */}
+            <GlobalLoading isLoading={loading && orders.length === 0} message="Fetching Orders..." />
+
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-slate-800">Order Management</h2>
@@ -178,7 +182,8 @@ export default function OrderManager() {
                     </table>
                 </div>
 
-                {paginatedOrders.length === 0 && (
+                {/* Show fallback ONLY if not loading and no orders */}
+                {!loading && paginatedOrders.length === 0 && (
                     <div className="p-10 text-center text-slate-400">
                         No orders found matching your criteria.
                     </div>

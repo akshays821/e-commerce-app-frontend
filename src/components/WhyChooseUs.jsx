@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Sparkles, ShieldCheck, Lock, Database } from "lucide-react";
 import bgImage from "../assets/why-choose-bg.png";
 
@@ -26,6 +27,15 @@ const features = [
 ];
 
 export default function WhyChooseUs() {
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveIndex((prev) => (prev + 1) % features.length);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <section className="relative py-8 md:py-16 overflow-hidden bg-slate-50 border-t border-slate-200">
             {/* Soft Ambient Background */}
@@ -53,9 +63,9 @@ export default function WhyChooseUs() {
                             transition={{ delay: idx * 0.05, duration: 0.4 }}
                             className="bg-white border border-slate-200 p-4 md:p-6 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-violet-900/5 transition-all group flex flex-col items-center text-center relative overflow-hidden"
                         >
-                            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                            <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-blue-500 transform transition-transform duration-300 ${idx === activeIndex ? "scale-x-100" : "scale-x-0"} md:scale-x-0 md:group-hover:scale-x-100`} />
 
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:bg-violet-600 group-hover:text-white transition-all duration-300">
+                            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-3 md:mb-4 transition-all duration-300 ${idx === activeIndex ? "bg-violet-600 text-white scale-110" : "bg-violet-50 text-violet-600"} md:bg-violet-50 md:text-violet-600 md:group-hover:bg-violet-600 md:group-hover:text-white md:group-hover:scale-110`}>
                                 <feature.icon size={20} />
                             </div>
                             <h3 className="text-sm md:text-base font-bold mb-1 md:mb-2 text-slate-900 tracking-tight">

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "../redux/slices/cartSlice";
-import axios from "axios";
+import api from "../utils/api";
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
 
@@ -27,8 +27,8 @@ const OrderSuccess = () => {
                 };
 
                 // Call backend to check status
-                const { data } = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/orders/status/${transactionId}`,
+                const { data } = await api.get(
+                    `/api/orders/status/${transactionId}`,
                     config
                 );
 
@@ -41,7 +41,7 @@ const OrderSuccess = () => {
                     if (!isDirectBuy) {
                         try {
                             // Clear Backend Cart
-                            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/cart/clear`, config);
+                            await api.delete("/api/cart/clear", config);
                             dispatch(clearCart()); // Clear local cart
                         } catch (err) {
                             console.error("Failed to clear cart", err);

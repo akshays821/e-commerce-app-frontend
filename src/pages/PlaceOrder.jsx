@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion"; // Animations
-import axios from "axios";
+import api from "../utils/api";
 import toast from "react-hot-toast";
 
 const PlaceOrder = () => {
@@ -96,8 +96,8 @@ const PlaceOrder = () => {
                 totalAmount: totalPrice,
             };
 
-            const { data } = await axios.post(
-                `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
+            const { data } = await api.post(
+                "/api/orders",
                 orderData,
                 config
             );

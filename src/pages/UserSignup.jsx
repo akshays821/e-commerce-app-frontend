@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import toast from "react-hot-toast";
 
 import {
@@ -43,8 +43,8 @@ export default function UserSignup() {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/register`,
+      const res = await api.post(
+        "/api/users/register",
         { name, email, password }
       );
 
@@ -62,8 +62,8 @@ export default function UserSignup() {
   const handleGoogleSuccess = async (response) => {
     try {
       // 1. Send the Google credential (token) to our backend
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/google`,
+      const res = await api.post(
+        "/api/users/google",
         { credential: response.credential }
       );
 
@@ -138,7 +138,7 @@ export default function UserSignup() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-5 py-3.5 rounded-xl bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 focus:border-violet-500 outline-none transition-all border border-slate-200 font-medium"
-                  
+
                 />
               </div>
 

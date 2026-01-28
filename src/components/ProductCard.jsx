@@ -8,7 +8,9 @@ export default function ProductCard({ product }) {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "/placeholder.png";
     if (imagePath.startsWith("http")) return imagePath;
-    return `${import.meta.env.VITE_API_BASE_URL}/${imagePath.replace(/\\/g, "/")}`;
+
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+    return `${baseUrl}/${imagePath.replace(/\\/g, "/")}`;
   };
 
   // Deterministic random subtle color based on product ID

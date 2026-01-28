@@ -1,13 +1,14 @@
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { Package, ChevronRight, Hash, Calendar, DollarSign, Truck, CheckCircle, Clock, XCircle, MapPin, ShoppingBag, Trash2 } from "lucide-react";
-import { toast } from "react-hot-toast"; // Ensure toast is imported
-import { showModal } from "../redux/slices/uiSlice"; // Import showModal
-import { useDispatch } from "react-redux"; // Import useDispatch
+import { toast } from "react-hot-toast";
+import { showModal } from "../redux/slices/uiSlice";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import GlobalLoading from "../components/GlobalLoading";
 
 const MyOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -28,8 +29,8 @@ const MyOrders = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const { data } = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/orders/myorders`,
+                const { data } = await api.get(
+                    "/api/orders/myorders",
                     config
                 );
                 setOrders(data);
@@ -68,14 +69,7 @@ const MyOrders = () => {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4" />
-                <p className="text-slate-500 font-medium">Loading your orders...</p>
-            </div>
-        );
-    }
+    if (loading) return <GlobalLoading isLoading={true} message="Loading Orders..." />;
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 pt-24 pb-12 md:py-12 px-4 md:px-8 relative font-sans">
@@ -337,7 +331,7 @@ const OrderCard = ({ order, index, navigate, onTrack, token, dispatch, setOrders
                                     showCancel: true,
                                     onConfirm: async () => {
                                         try {
-                                            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${order._id}`, {
+                                            await api.delete(`/api/orders/${order._id}`, {
                                                 headers: { Authorization: `Bearer ${token}` }
                                             });
                                             toast.success("Order deleted");

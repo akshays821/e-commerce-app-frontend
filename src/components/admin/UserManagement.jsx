@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { User, Ban, CheckCircle } from "lucide-react";
-import axios from "axios";
+import api from "../../utils/api";
 import toast from "react-hot-toast";
+import GlobalLoading from "../GlobalLoading";
 import ConfirmDialog from "./ConfirmDialog";
 
 export default function UserManagement() {
@@ -24,8 +25,8 @@ export default function UserManagement() {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem("adminToken");
-            const { data } = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/api/admin/users`,
+            const { data } = await api.get(
+                "/api/admin/users",
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setUsers(data);
@@ -50,8 +51,8 @@ export default function UserManagement() {
     const executeBan = async () => {
         try {
             const token = localStorage.getItem("adminToken");
-            await axios.put(
-                `${import.meta.env.VITE_API_BASE_URL}/api/admin/users/${modal.userId}/ban`,
+            await api.put(
+                `/api/admin/users/${modal.userId}/ban`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -71,7 +72,7 @@ export default function UserManagement() {
         return true;
     });
 
-    if (loading) return <div className="p-8 text-center text-muted-foreground">Loading users...</div>;
+    if (loading) return <GlobalLoading isLoading={true} message="Loading Users..." />;
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">

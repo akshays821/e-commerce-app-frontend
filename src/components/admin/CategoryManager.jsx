@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Tag, Loader2, ArrowLeft } from "lucide-react";
-import axios from "axios";
+import api from "../../utils/api";
 import toast from "react-hot-toast";
 import ConfirmDialog from "./ConfirmDialog";
 import ProductList from "./ProductList";
@@ -24,7 +24,7 @@ export default function CategoryManager() {
 
     const fetchCategories = async () => {
         try {
-            const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`);
+            const { data } = await api.get("/api/categories");
             setCategories(data);
         } catch {
             toast.error("Failed to load categories");
@@ -40,8 +40,8 @@ export default function CategoryManager() {
         setAdding(true);
         try {
             const token = localStorage.getItem("adminToken");
-            await axios.post(
-                `${import.meta.env.VITE_API_BASE_URL}/api/categories`,
+            await api.post(
+                "/api/categories",
                 { name: newCategory },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -66,8 +66,8 @@ export default function CategoryManager() {
     const executeDelete = async () => {
         try {
             const token = localStorage.getItem("adminToken");
-            await axios.delete(
-                `${import.meta.env.VITE_API_BASE_URL}/api/categories/${modal.categoryId}`,
+            await api.delete(
+                `/api/categories/${modal.categoryId}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             toast.success("Category removed");
