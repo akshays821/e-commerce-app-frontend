@@ -115,15 +115,16 @@ export default function ProductDetails() {
         <div className="min-h-screen bg-[#fcfcfc] text-neutral-800 relative z-0 overflow-hidden">
 
             {/* Alive Background Blobs */}
+            {/* Alive Background Blobs - Optimized for Mobile */}
             <motion.div
-                animate={{ scale: [1, 1.1, 1], rotate: [0, 45, 0] }}
+                animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="fixed top-0 right-0 w-[600px] h-[600px] bg-indigo-200/30 rounded-full blur-[120px] -z-10 translate-x-1/3 -translate-y-1/3 pointer-events-none"
+                className="fixed top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-indigo-200/30 rounded-full blur-3xl md:blur-[100px] -z-10 translate-x-1/3 -translate-y-1/3 pointer-events-none"
             />
             <motion.div
-                animate={{ scale: [1, 1.2, 1], rotate: [0, -45, 0] }}
+                animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-rose-200/20 rounded-full blur-[120px] -z-10 -translate-x-1/3 translate-y-1/3 pointer-events-none"
+                className="fixed bottom-0 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-rose-200/20 rounded-full blur-3xl md:blur-[100px] -z-10 -translate-x-1/3 translate-y-1/3 pointer-events-none"
             />
 
             {/* Navigation Header */}

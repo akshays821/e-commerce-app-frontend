@@ -68,7 +68,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-violet-50/80 backdrop-blur-xl border-b border-violet-200/40 shadow-sm shadow-violet-900/5 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-violet-50/80 backdrop-blur-md md:backdrop-blur-xl border-b border-violet-200/40 shadow-sm shadow-violet-900/5 transition-all duration-300">
       <div className="w-full px-4 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20 gap-4 md:gap-8">
 

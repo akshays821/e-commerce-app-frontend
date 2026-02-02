@@ -86,7 +86,7 @@ export default function CategorySection({ categories, activeCategory, onSelect }
       </div>
 
       <motion.div
-        className="flex overflow-x-auto pb-4 gap-4 snap-x md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:pb-0 no-scrollbar touch-pan-x"
+        className="flex overflow-x-auto pb-4 gap-4 md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:pb-0 no-scrollbar touch-pan-x"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -110,7 +110,6 @@ export default function CategorySection({ categories, activeCategory, onSelect }
           return (
             <motion.button
               key={categoryName}
-              layout
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               whileHover={{ scale: 1.05, y: -5 }}
@@ -118,7 +117,7 @@ export default function CategorySection({ categories, activeCategory, onSelect }
               onClick={() => onSelect(isActive ? null : categoryName)}
               className={`
                 relative group flex flex-col items-center justify-center gap-2 md:gap-3 p-3 md:p-6 rounded-2xl transition-all duration-300
-                border border-transparent flex-shrink-0 w-24 md:w-auto snap-center
+                border border-transparent flex-shrink-0 w-24 md:w-auto
                 ${isActive
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                   : `${colorClass} text-foreground hover:shadow-xl hover:shadow-black/5`

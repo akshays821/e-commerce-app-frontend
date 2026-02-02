@@ -160,7 +160,7 @@ export default function Home() {
         </div>
 
         {/* Categories & Products Section - White Card Effect */}
-        <div className="bg-white/40 backdrop-blur-3xl border-t border-white/20 min-h-screen rounded-t-[2rem] md:rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.02)] -mt-6 md:-mt-4 relative z-10">
+        <div className="bg-white/40 backdrop-blur-md md:backdrop-blur-3xl border-t border-white/20 min-h-screen rounded-t-[2rem] md:rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.02)] -mt-6 md:-mt-4 relative z-10">
           <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 space-y-8 md:space-y-16">
 
             <CategorySection
