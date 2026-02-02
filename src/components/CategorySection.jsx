@@ -86,7 +86,7 @@ export default function CategorySection({ categories, activeCategory, onSelect }
       </div>
 
       <motion.div
-        className="flex overflow-x-auto pb-4 gap-4 md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:pb-0 no-scrollbar touch-pan-x"
+        className="flex overflow-x-auto pb-4 gap-4 md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:pb-0 no-scrollbar"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
